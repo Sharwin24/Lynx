@@ -12,11 +12,10 @@ class Generator():
     Args:
         width (int): The maze width in number of cells
         height (int): The maze height in number of cells
-        start tuple(int, int): The start cell expressed as a tuple of (row, column). Defaults to None
-        goal tuple(int, int): The goal cell expressed as a tuple of (row, column). Defaults to None
+        start tuple(int, int): The start cell expressed as a tuple of (row, column). Defaults to None which will be random
+        goal tuple(int, int): The goal cell expressed as a tuple of (row, column). Defaults to None which will be random
 
     Returns:
         Maze: _description_
     """
     maze = [] # Maze will be a list of Cell objects that then get put into Maze
-
