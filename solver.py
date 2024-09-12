@@ -2,12 +2,18 @@ from cell import Cell
 from maze import Maze, MazeInfo
 from collections import deque
 from maze_interpreter import MazeInterpreter
+from enum import Enum
 
 
 class Solver:
+    class SolverAlgorithm(Enum):
+        Wavefront = 0
+        DFS = 1
+        RecursiveBackTracking = 2
+        BeliefStatePlanner = 3
 
-    def __init__(self, a: str, m: Maze):
-        self.algo = a
+    def __init__(self, algo: SolverAlgorithm, m: Maze):
+        self.algo = algo
         self.maze = m
         self.path = []
         self.visited = []
