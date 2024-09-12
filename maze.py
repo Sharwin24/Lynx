@@ -65,20 +65,23 @@ class Maze:
         self.goal_index = goal_index
         self.robot_index = robot_index
 
-    def get_neighbors(self, cell: Cell):
+    def get_neighbors(self, cell: Cell, maze_list: list[Cell]) -> list[Cell]:
         """finds the neighboring cell indices to the given cell index
 
         Args:
             cell (Cell): index of the target cell
-        
+
         Returns:
             neighbors_list([ind]): list of indices of found neighbors
         """
         neighbors_list = []
 
-        if self.info.type == 1:
+        if maze_list == []:
+            maze_list = self.maze_list
 
-            index = cell.get_index
+        if self.info.type == MazeInfo.MazeType.GridMaze:
+
+            index = cell.get_index()
             rows = self.info.size[0]
             cols = self.info.size[1]
             end_ind = rows * cols - 1
@@ -86,22 +89,21 @@ class Maze:
             loc_c = index % cols
             up_ind = index - cols
             if up_ind >= 0:
-                neighbors_list.append(self.maze_list[up_ind])
+                neighbors_list.append(maze_list[up_ind])
             right_ind = index + 1
             if loc_c + 1 <= cols - 1:
-                neighbors_list.append(self.maze_list[right_ind])
-            down_ind = index + cols 
+                neighbors_list.append(maze_list[right_ind])
+            down_ind = index + cols
             if down_ind <= end_ind:
-                neighbors_list.append(self.maze_list[down_ind])
+                neighbors_list.append(maze_list[down_ind])
             left_ind = index - 1
-            if loc_c -1 >= 0:
-                neighbors_list.append(self.maze_list[left_ind])
+            if loc_c - 1 >= 0:
+                neighbors_list.append(maze_list[left_ind])
 
             return neighbors_list
-        
+
         else:
             print("Unsupported maze type")
-
 
     def __repr__(self) -> str:
         """ Returns the string representation of the maze
@@ -124,4 +126,4 @@ class Maze:
         Returns:
             str: The ASCII representation of the maze
         """
-        pass
+        return str(self.maze_list)
