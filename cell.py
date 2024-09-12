@@ -16,13 +16,13 @@ class Cell:
         self.is_wall = is_wall
         self.is_free = False
 
-    def set_wall(self, is_wall: bool):
-        self.is_wall = is_wall
-        self.is_free = not is_wall
+    def set_wall(self):
+        self.is_wall = True
+        self.is_free = False
 
-    def set_free(self, is_free: bool):
-        self.is_free = is_free
-        self.is_wall = not is_free
+    def set_free(self):
+        self.is_free = True
+        self.is_wall = False
 
     def get_neighbors(self):
         return self.neighbors
