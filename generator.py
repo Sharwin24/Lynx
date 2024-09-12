@@ -1,3 +1,4 @@
+#! /usr/bin/env python3
 from maze import Maze, MazeInfo
 from cell import Cell
 
@@ -19,7 +20,7 @@ class Generator:
         Returns:
             Maze: A Maze object that is populated with the generated maze
         """
-        maze_list = []  # Maze will be a list of Cell objects that then get put into Maze
+        maze_list: list[Cell] = []
         index = 0
         # Create a grid of wall cells with the correct size
         for r in range(num_rows):
@@ -53,15 +54,37 @@ class Generator:
             Add the walls of A to the wall list
           Remove W from wall list
         '''
+        generated_maze = Maze(info=MazeInfo(
+            MazeInfo.MazeType.GridMaze,
+            size=(num_rows, num_cols),
+            maze_list=maze_list)
+        )
 
-        # Set start cell as free
+        # Set start cell as free and create empty wall_list
+        maze_list[start_index].set_free(True)
+        wall_list: list[Cell] = []
+        # Get neighbors of start cell and add to wall list
+        for n in generated_maze.get_neighbors(cell=maze_list[start_index], maze_list=maze_list):
+            wall_list.append(n)
+        while not wall_list:
+            random_wall = wall_list[random.randint(0, len(wall_list) - 1)]
+            # If random_wall's neighbors has exactly one free cell
+            random_wall_neighbors: list[Cell] = generated_maze.get_neighbors(
+                cell=random_wall, maze_list=maze_list)
+            if len(filter(lambda c: c.is_wall(), random_wall_neighbors)) == 1:
+                # Find the neighhbor that is free
+                free_neighbor = filter(
+                    lambda c: c.is_wall(), random_wall_neighbors)
+                free_neighbor.set_free()
 
-        return Maze(info=MazeInfo(MazeInfo.MazeType.GridMaze, size=(num_rows, num_cols)),
-                    maze_list=maze_list,
-                    start_index=start_index,
-                    goal_index=goal_index,
-                    robot_index=start_index  # Robot starts at starting cell
-                    )
+        # Populate the Maze with the maze list
+        generated_maze.populate_maze(
+            maze_list=maze_list,
+            start_index=start_index,
+            goal_index=goal_index,
+            robot_index=start_index  # Robot starts at starting cell
+        )
+        return generated_maze
 
 
 g = Generator()

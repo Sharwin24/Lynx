@@ -65,7 +65,7 @@ class Maze:
         self.goal_index = goal_index
         self.robot_index = robot_index
 
-    def get_neighbors(self, maze_list: list[Cell], cell: Cell):
+    def get_neighbors(self, maze_list: list[Cell], cell: Cell) -> list[Cell]:
         pass
 
     def __repr__(self) -> str:
