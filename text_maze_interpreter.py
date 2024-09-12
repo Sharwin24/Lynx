@@ -1,5 +1,16 @@
 #! /usr/bin/env python3
 
+""" interpreter for sample txt mazes
+
+    sample usage:
+    mi = MazeInterpreter()
+    mi.interpret_external("sample_maze_1.txt")
+    
+    result:
+    mi.interpreted_maze now contains an instance of Maze object
+
+"""
+
 from cell import Cell
 from maze import Maze
 import os
