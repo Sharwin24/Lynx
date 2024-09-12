@@ -50,25 +50,25 @@ class Maze():
         self.goal_index = goal_index
         self.robot_index = robot_index
 
-    def __repr__(self) -> str:
-        """ Returns the string representation of the maze
+    # def __repr__(self) -> str:
+    #     """ Returns the string representation of the maze
 
-        Text representation for mazes:
+    #     Text representation for mazes:
 
-        #: Free cell
-        @: Wall cell
-        %: Start cell
-        &: Goal cell
-        *: Current bot cell
+    #     #: Free cell
+    #     @: Wall cell
+    #     %: Start cell
+    #     &: Goal cell
+    #     *: Current bot cell
 
-        Example text representation:
+    #     Example text representation:
 
-        %*###@##
-        @##@@@@&
-        ##@@####
-        ######@@
+    #     %*###@##
+    #     @##@@@@&
+    #     ##@@####
+    #     ######@@
 
-        Returns:
-            str: The ASCII representation of the maze
-        """
-        pass
+    #     Returns:
+    #         str: The ASCII representation of the maze
+    #     """
+    #     pass

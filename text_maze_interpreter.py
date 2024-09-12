@@ -6,41 +6,60 @@ import os
 
 
 class MazeInterpreter:
-
-    def __init__(self, name):
-        self.name = name
+    """_summary_
+    """
+    def __init__(self):
+        self.interpreted_maze = Maze()
 
     # Takes in an external file path and loads the maze from the .txt file.
     def interpret_external(self, filepath):
+        """interpreter for an externally loaded maze
 
-        interpreted_maze = Maze()
+        Args:
+            filepath (str): path to the maze txt file
 
+        Returns:
+            interpreted_maze: interpreted maze object with populated maze list
+        """
         cell_index = 0
 
         with open(filepath) as file:
             rows = len(file.readlines())
+
+        with open(filepath) as file:
             for line in file.readlines():
+                print(line)
                 cols = len(line) -1 
                 for char in line:
                     match char:
                         case "%":
                             current_cell = Cell(cell_index, self.find_neighbors(cell_index, rows, cols), False)
-                            interpreted_maze.start_index = cell_index
+                            self.interpreted_maze.start_index = cell_index
                         case "#":
                             current_cell = Cell(cell_index, self.find_neighbors(cell_index, rows, cols), False)
                         case "@":
                             current_cell = Cell(cell_index, self.find_neighbors(cell_index, rows, cols), True)
                         case "&":
                             current_cell = Cell(cell_index, self.find_neighbors(cell_index, rows, cols), False)
-                            interpreted_maze.goal_index = cell_index
+                            self.interpreted_maze.goal_index = cell_index
                     
                     cell_index += 1
-                    interpreted_maze.maze_list.append(current_cell)
+                    self.interpreted_maze.maze_list.append(current_cell)
     
-        return interpreted_maze    
+        return self.interpreted_maze    
 
     # Finds and returns a list of found neighbors to this cell index.
     def find_neighbors(self, index, rows, cols):
+        """mathmatically finds neighboring cell indeces based on current cell location
+
+        Args:
+            index (ind): current cell index
+            rows (ind): row size of maze
+            cols (ind): col size of maze
+
+        Returns:
+            neighbors_list: populated list of neighboring indices 
+        """
         neighbors_list = []
         end = rows * cols - 1
         loc_r = index // rows
