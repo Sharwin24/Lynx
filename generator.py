@@ -71,11 +71,19 @@ class Generator:
             # If random_wall's neighbors has exactly one free cell
             random_wall_neighbors: list[Cell] = generated_maze.get_neighbors(
                 cell=random_wall, maze_list=maze_list)
-            if len(filter(lambda c: c.is_wall(), random_wall_neighbors)) == 1:
+            if len(list(filter(lambda c: c.is_wall(), random_wall_neighbors))) == 1:
                 # Find the neighhbor that is free
-                free_neighbor = filter(
-                    lambda c: c.is_wall(), random_wall_neighbors)
-                free_neighbor.set_free()
+                free_neighbor = list(filter(
+                    lambda c: c.is_wall(), random_wall_neighbors))
+                # Set both the free neighbor and the wall we got here from to free
+                free_neighbor.set_free(True)
+                random_wall.set_free(True)
+                # Add the walls of free_neighbor to wall_list
+                free_neighbor_walls = list(filter(lambda c: c.is_wall(), generated_maze.get_neighbors(
+                    cell=free_neighbor, maze_list=maze_list)))
+                for n in free_neighbor_walls:
+                    wall_list.append(n)
+            wall_list.remove(random_wall)
 
         # Populate the Maze with the maze list
         generated_maze.populate_maze(
