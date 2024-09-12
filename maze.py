@@ -65,8 +65,43 @@ class Maze:
         self.goal_index = goal_index
         self.robot_index = robot_index
 
-    def get_neighbors(self, maze_list: list[Cell], cell: Cell):
-        pass
+    def get_neighbors(self, cell: Cell):
+        """finds the neighboring cell indices to the given cell index
+
+        Args:
+            cell (Cell): index of the target cell
+        
+        Returns:
+            neighbors_list([ind]): list of indices of found neighbors
+        """
+        neighbors_list = []
+
+        if self.info.type == 1:
+
+            index = cell.get_index
+            rows = self.info.size[0]
+            cols = self.info.size[1]
+            end_ind = rows * cols - 1
+
+            loc_c = index % cols
+            up_ind = index - cols
+            if up_ind >= 0:
+                neighbors_list.append(self.maze_list[up_ind])
+            right_ind = index + 1
+            if loc_c + 1 <= cols - 1:
+                neighbors_list.append(self.maze_list[right_ind])
+            down_ind = index + cols 
+            if down_ind <= end_ind:
+                neighbors_list.append(self.maze_list[down_ind])
+            left_ind = index - 1
+            if loc_c -1 >= 0:
+                neighbors_list.append(self.maze_list[left_ind])
+
+            return neighbors_list
+        
+        else:
+            print("Unsupported maze type")
+
 
     def __repr__(self) -> str:
         """ Returns the string representation of the maze
