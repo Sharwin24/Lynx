@@ -25,7 +25,7 @@ class Maze():
             goal_index (int, optional): The goal cell represented as an index within the maze_list. Defaults to None.
             robot_index (int, optional): The cell the robot occupies as an index within the maze_list. Defaults to None.
         """
-        self.maze_list = [] if maze_list == None else self.maze_list = maze_list
+        self.maze_list = maze_list
         self.maze_type = maze_type
         self.start_index = start_index
         self.goal_index = goal_index
