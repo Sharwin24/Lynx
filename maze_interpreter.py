@@ -40,7 +40,7 @@ class MazeInterpreter:
         with open(filepath) as file:
             for line in file.readlines():
                 print(line)
-                cols = len(line) - 1
+                cols = len(line)
                 
                 for char in line:
                     match char:
@@ -58,6 +58,8 @@ class MazeInterpreter:
                             current_cell = Cell(cell_index, self.find_neighbors(
                                 cell_index, rows, cols), False)
                             goal_index = cell_index
+                        case _:
+                            continue
 
                     cell_index += 1
                     cell_list.append(current_cell)
@@ -108,4 +110,14 @@ if __name__ == "__main__":
     print(maze.maze_list)
     test_ind = 25
     print(f"The neighbors of {test_ind} is {maze.maze_list[test_ind].get_neighbors()}")
+
+    for i in range(len(maze.maze_list)):
+        cell_ind = maze.maze_list[i].get_index()
+        print(f"{cell_ind} is {maze.maze_list[i].get_wall()}")
+
     print(maze)
+
+
+
+#
+# [1]"python - How to do an else (default) in match-case? - Stack Overflow", Stackoverflow, 2021. Available: https://stackoverflow.com/questions/68804209/how-to-do-an-else-default-in-match-case. [Accessed 12 September. 2024].

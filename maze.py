@@ -129,12 +129,12 @@ class Maze:
 
         rows = self.info.size[0]
         cols = self.info.size[1]
-
         char_ind = 0
         output_str = str("")
 
         start_ind = self.start_index
         goal_ind = self.goal_index
+        # loop through maze_list for char representation
         for row in range(rows):
             for char in range(cols):
                 current_cell = self.maze_list[char_ind]
