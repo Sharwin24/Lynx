@@ -3,7 +3,7 @@ class Cell:
     neighbors = []
     is_wall = False
 
-    def __init__(self, i, n, w):
+    def __init__(self, i: int, n: list, w: bool):
         self.index = i
         self.neighbors = n
         self.is_wall = w
