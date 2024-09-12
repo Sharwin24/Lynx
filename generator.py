@@ -1,4 +1,4 @@
-from maze import Maze, MazeType
+from maze import Maze, MazeInfo
 from cell import Cell
 
 import random
@@ -7,10 +7,11 @@ import random
 class Generator:
     """Class that generates the the maze utilizing randomized prim's algorithm"""
 
-    def generate_rectangular_maze(self, num_cols: int, num_rows: int, start: tuple[int, int] = None) -> Maze:
+    def generate_rectangular_maze(self, info: MazeInfo, num_cols: int, num_rows: int, start: tuple[int, int] = None) -> Maze:
         """ Generates a rectangular maze using inputs about the size of the maze and the start state
 
         Args:
+            info (MazeInfo): The information about the maze including type and
             num_cols (int): The maze width in number of cells
             num_rows (int): The maze height in number of cells
             start tuple(int, int): The start cell expressed as a tuple of (row, column). Defaults to None which will be random
@@ -53,8 +54,10 @@ class Generator:
           Remove W from wall list
         '''
 
-        return Maze(maze_list=maze_list,
-                    maze_type=MazeType.GridMaze,
+        # Set start cell as free
+
+        return Maze(info=MazeInfo(MazeInfo.MazeType.GridMaze, size=(num_rows, num_cols)),
+                    maze_list=maze_list,
                     start_index=start_index,
                     goal_index=goal_index,
                     robot_index=start_index  # Robot starts at starting cell
