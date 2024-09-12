@@ -65,26 +65,63 @@ class Maze:
         self.goal_index = goal_index
         self.robot_index = robot_index
 
-    def get_neighbors(self, maze_list: list[Cell], cell: Cell) -> list[Cell]:
-        pass
+    def get_neighbors(self, cell: Cell, maze_list: list[Cell]) -> list[Cell]:
+        """finds the neighboring cell indices to the given cell index
+
+        Args:
+            cell (Cell): index of the target cell
+
+        Returns:
+            neighbors_list([ind]): list of indices of found neighbors
+        """
+        neighbors_list = []
+
+        if maze_list == []:
+            maze_list = self.maze_list
+
+        if self.info.type == 1:
+
+            index = cell.get_index
+            rows = self.info.size[0]
+            cols = self.info.size[1]
+            end_ind = rows * cols - 1
+
+            loc_c = index % cols
+            up_ind = index - cols
+            if up_ind >= 0:
+                neighbors_list.append(maze_list[up_ind])
+            right_ind = index + 1
+            if loc_c + 1 <= cols - 1:
+                neighbors_list.append(maze_list[right_ind])
+            down_ind = index + cols
+            if down_ind <= end_ind:
+                neighbors_list.append(maze_list[down_ind])
+            left_ind = index - 1
+            if loc_c - 1 >= 0:
+                neighbors_list.append(maze_list[left_ind])
+
+            return neighbors_list
+
+        else:
+            print("Unsupported maze type")
 
     def __repr__(self) -> str:
         """ Returns the string representation of the maze
 
-        Text representation for mazes:
+    #     Text representation for mazes:
 
-        #: Free cell
-        @: Wall cell
-        %: Start cell
-        &: Goal cell
-        *: Current bot cell
+    #     #: Free cell
+    #     @: Wall cell
+    #     %: Start cell
+    #     &: Goal cell
+    #     *: Current bot cell
 
-        Example text representation:
+    #     Example text representation:
 
-        %*###@##
-        @##@@@@&
-        ##@@####
-        ######@@
+    #     %*###@##
+    #     @##@@@@&
+    #     ##@@####
+    #     ######@@
 
         Returns:
             str: The ASCII representation of the maze
