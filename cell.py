@@ -11,9 +11,6 @@ class Cell:
     def set_wall(self, w):
         self.is_wall = w
 
-    def set_free(self, f):
-        self.is_free = f
-
     def get_neighbors(self):
         return self.neighbors
     
