@@ -102,9 +102,10 @@ class MazeInterpreter:
 
 
 if __name__ == "__main__":
-    filepath = "sample_maze_2.txt"
+    filepath = "sample_maze_1.txt"
     mi = MazeInterpreter()
     maze = mi.interpret_external(filepath)
     print(maze.maze_list)
     test_ind = 25
     print(f"The neighbors of {test_ind} is {maze.maze_list[test_ind].get_neighbors()}")
+    print(maze)

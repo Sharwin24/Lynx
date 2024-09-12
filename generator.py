@@ -106,6 +106,6 @@ if __name__ == '__main__':
     )
 
     for i in range(len(maze.maze_list)):
-        print(maze.maze_list[i].is_wall)
-
+        print(maze.maze_list[i].is_free)
+    
     print(maze)
