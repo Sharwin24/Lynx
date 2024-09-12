@@ -9,7 +9,7 @@ class MazeType(Enum):
     HexMaze = 2
 
 
-class Maze():
+class Maze:
     """ A class representing the entire maze, containing the list of cell objects, the type of maze, and the start/goal cells
     """
 
@@ -50,8 +50,11 @@ class Maze():
         self.goal_index = goal_index
         self.robot_index = robot_index
 
-    # def __repr__(self) -> str:
-    #     """ Returns the string representation of the maze
+    def get_neighbors(self, maze_list: list[Cell], cell: Cell):
+        pass
+
+    def __repr__(self) -> str:
+        """ Returns the string representation of the maze
 
     #     Text representation for mazes:
 
@@ -68,7 +71,16 @@ class Maze():
     #     ##@@####
     #     ######@@
 
-    #     Returns:
-    #         str: The ASCII representation of the maze
-    #     """
-    #     pass
+        Returns:
+            str: The ASCII representation of the maze
+        """
+        pass
+
+
+class HexMaze(Maze):
+    pass
+
+
+class GridMaze(Maze):
+    def get_neighbors(self, maze_list: list[Cell], maze_type: MazeType, cell: Cell):
+        pass
