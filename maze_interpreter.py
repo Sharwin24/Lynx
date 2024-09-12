@@ -63,7 +63,7 @@ class MazeInterpreter:
                     cell_list.append(current_cell)
 
         sample_maze_info = MazeInfo(MazeInfo.MazeType.GridMaze, (rows, cols))
-        interpreted_maze = Maze(sample_maze_info, cell_list, start_index, goal_index)
+        interpreted_maze = Maze(sample_maze_info, cell_list, start_index, goal_index, start_index)
 
         return interpreted_maze
 
