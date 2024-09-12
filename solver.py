@@ -22,7 +22,7 @@ class Solver:
         weight = [0] * len(self.maze.maze_list)
         goal = self.maze.maze_list[self.maze.goal_index]
 
-        q = []
+        q = deque()
 
         q.append(goal)
         self.visited.append(goal.get_index())
