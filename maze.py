@@ -79,9 +79,9 @@ class Maze:
         if maze_list == []:
             maze_list = self.maze_list
 
-        if self.info.type == 1:
+        if self.info.type == MazeInfo.MazeType.GridMaze:
 
-            index = cell.get_index
+            index = cell.get_index()
             rows = self.info.size[0]
             cols = self.info.size[1]
             end_ind = rows * cols - 1
@@ -126,4 +126,4 @@ class Maze:
         Returns:
             str: The ASCII representation of the maze
         """
-        pass
+        return str(self.maze_list)
