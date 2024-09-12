@@ -64,6 +64,8 @@ class MazeInterpreter:
 
         sample_maze_info = MazeInfo(MazeInfo.MazeType.GridMaze, (rows, cols))
         interpreted_maze = Maze(sample_maze_info, cell_list, start_index, goal_index, start_index)
+        print(f"The start index is : {start_index}")
+        print(f"The goal index is: {goal_index}")
 
         return interpreted_maze
 
@@ -104,4 +106,5 @@ if __name__ == "__main__":
     mi = MazeInterpreter()
     maze = mi.interpret_external(filepath)
     print(maze.maze_list)
-    print(maze.maze_list[25].get_neighbors())
+    test_ind = 25
+    print(f"The neighbors of {test_ind} is {maze.maze_list[test_ind].get_neighbors()}")
