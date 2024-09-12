@@ -18,9 +18,11 @@ class Cell:
 
     def set_wall(self, is_wall: bool):
         self.is_wall = is_wall
+        self.is_free = not is_wall
 
     def set_free(self, is_free: bool):
         self.is_free = is_free
+        self.is_wall = not is_free
 
     def get_neighbors(self):
         return self.neighbors
