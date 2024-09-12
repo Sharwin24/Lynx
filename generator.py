@@ -84,6 +84,9 @@ class Generator:
                 for n in free_neighbor_walls:
                     wall_list.append(n)
             wall_list.remove(random_wall)
+        # Pick a random goal index from the list of free cells
+        free_cells = list(filter(lambda c: c.is_free(), maze_list))
+        goal_index = free_cells[random.randint(0, len(free_cells) - 1)]
 
         # Populate the Maze with the maze list
         generated_maze.populate_maze(
