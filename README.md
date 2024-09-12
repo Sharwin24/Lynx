@@ -1,1 +1,2 @@
-Northwester MSR Team Robotic Lynx
+# Robotic Lynx
+Northwestern MSR Team
