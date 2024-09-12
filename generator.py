@@ -4,7 +4,7 @@ from cell import Cell
 import random
 
 
-class Generator():
+class Generator:
     """Class that generates the the maze utilizing randomized prim's algorithm"""
 
     def generate_rectangular_maze(self, num_cols: int, num_rows: int, start: tuple[int, int] = None) -> Maze:
@@ -32,12 +32,26 @@ class Generator():
           _ _ _     6 7 8
         To convert a (r,c) to an index: index = ((c + 1) * num_columns) + (r + 1)
         '''
-        if start == None:
-            # Randomize start position
+        if start == None:  # Randomize start position if not already picked
             start = (random.randint(0, num_rows - 1),
                      random.randint(0, num_cols - 1))
         # Convert the (row, column) position to the index in maze_list
         start_index = ((start[1] + 1) * num_cols) + (start[0] + 1)
+
+        '''
+        Randomly choose a cell Q and mark it as free, let's pick our start index
+        Add cell Q's neighbors to the wall list
+        While the wall list is not empty:
+          Randomly choose a wall W from wall list
+          If wall W is adjacent to exactly one free cell
+            Let F be the free cell that W is adjacent to
+            W is to a direction DIR of F
+            Let A be the cell to the direction DIR of W
+            Make W free
+            Make A Free
+            Add the walls of A to the wall list
+          Remove W from wall list
+        '''
 
         return Maze(maze_list=maze_list,
                     maze_type=MazeType.GridMaze,
