@@ -104,4 +104,8 @@ if __name__ == '__main__':
         MazeInfo(MazeInfo.MazeType.GridMaze, (10, 10)),
         start=(0, 0)
     )
+
+    for i in range(len(maze.maze_list)):
+        print(maze.maze_list[i].is_wall)
+    
     print(maze)
