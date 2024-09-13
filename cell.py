@@ -14,7 +14,7 @@ class Cell:
         self.index = index
         self.neighbors = neighbors
         self.is_wall = is_wall
-        self.is_free = False
+        self.is_free = not(is_wall)
 
     def set_wall(self):
         self.is_wall = True
