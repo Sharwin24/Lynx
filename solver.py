@@ -21,6 +21,8 @@ class Solver:
     def wavefront(self, m):
         weight = [0] * len(self.maze.maze_list)
         goal = self.maze.maze_list[self.maze.goal_index]
+        print(goal.get_index())
+        weight[goal.get_index()] = 2
 
         q = deque()
 
@@ -30,17 +32,21 @@ class Solver:
             front = q.popleft()
             for n in front.get_neighbors():
                 if n not in self.visited:
-                    weight[n] = weight[front.get_index()] + 1
+                    if self.maze.maze_list[n].get_wall():
+                        weight[n] = 1
+                    else:
+                        weight[n] = weight[front.get_index()] + 1
                     q.append(self.maze.maze_list[n])
-                    self.visited.append(front.get_index())
+            self.visited.append(front.get_index())
 
         pos = self.maze.maze_list[self.maze.start_index]
         self.path.append(pos.get_index())
         while pos.get_index() != goal.get_index():
+            print("Second")
             cur_weight = weight[pos.get_index()]
             next_move = -1
             for n in pos.get_neighbors():
-                if weight[n] < cur_weight:
+                if weight[n] > 1 and weight[n] < cur_weight:
                     cur_weight = weight[n]
                     next_move = n
             self.path.append(next_move)
