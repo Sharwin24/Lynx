@@ -126,4 +126,28 @@ class Maze:
         Returns:
             str: The ASCII representation of the maze
         """
-        return str(self.maze_list)
+
+        rows = self.info.size[0]
+        cols = self.info.size[1]
+        char_ind = 0
+        output_str = str("")
+
+        start_ind = self.start_index
+        goal_ind = self.goal_index
+        # loop through maze_list for char representation
+        for row in range(rows):
+            for char in range(cols):
+                current_cell = self.maze_list[char_ind]
+                if current_cell.is_free:
+                    if char_ind == start_ind:
+                        output_str += "%"
+                    elif char_ind == goal_ind:
+                        output_str += "&"
+                    else:
+                        output_str += "#"
+                elif current_cell.is_wall:
+                    output_str += "@"
+                char_ind += 1
+            output_str += "\n"
+
+        return output_str
