@@ -59,7 +59,6 @@ class Generator:
             size=(num_rows, num_cols)),
             maze_list=maze_ls
         )
-        print(f"Start Index {start_index} \nGenerated Maze {generated_maze}")
         # Set start cell as free and create empty wall_list
         generated_maze.set_cell_free(start_index)
         wall_list: list[Cell] = []
@@ -90,7 +89,6 @@ class Generator:
             filter(lambda c: c.is_free, generated_maze.maze_list))
         # goal_index = free_cells[random.randint(0, len(free_cells) - 1)]
         goal_index = random.choice(free_cells).get_index()
-        print(f"Goal Index {goal_index}")
         # Populate the Maze with the maze list
         generated_maze.populate_maze(
             maze_list=maze_ls,
@@ -108,7 +106,4 @@ if __name__ == '__main__':
         start=(0, 0)
     )
 
-    # for i in range(len(maze.maze_list)):
-    #     print(maze.maze_list[i].is_free)
-
-    print(f"Maze:\n {maze}")
+    print(f"Generated Maze:\n{maze}")
