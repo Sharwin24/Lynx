@@ -39,8 +39,9 @@ class MazeInterpreter:
 
         with open(filepath) as file:
             for line in file.readlines():
-                print(line)
-                cols = len(line)
+                # print(line)
+                # Need to strip line return to make lines consistent
+                cols = len(line.strip("\n"))
                 
                 for char in line:
                     match char:
@@ -66,8 +67,10 @@ class MazeInterpreter:
 
         sample_maze_info = MazeInfo(MazeInfo.MazeType.GridMaze, (rows, cols))
         interpreted_maze = Maze(sample_maze_info, cell_list, start_index, goal_index, start_index)
+
         print(f"The start index is : {start_index}")
         print(f"The goal index is: {goal_index}")
+        print(f"This maze has {rows} rows, and {cols} cols.")
 
         return interpreted_maze
 
@@ -104,17 +107,16 @@ class MazeInterpreter:
 
 
 if __name__ == "__main__":
-    filepath = "sample_maze_1.txt"
+    filepath = "sample_maze_3.txt"
     mi = MazeInterpreter()
     maze = mi.interpret_external(filepath)
-    print(maze.maze_list)
-    test_ind = 25
+    # print(maze.maze_list)
+    test_ind = 26
     print(f"The neighbors of {test_ind} is {maze.maze_list[test_ind].get_neighbors()}")
 
-    for i in range(len(maze.maze_list)):
-        cell_ind = maze.maze_list[i].get_index()
-        print(f"{cell_ind} is {maze.maze_list[i].get_wall()}")
-
+    # for i in range(len(maze.maze_list)):
+    #     cell_ind = maze.maze_list[i].get_index()
+    #     print(f"{cell_ind} is {maze.maze_list[i].get_wall()}")
     print(maze)
 
 
