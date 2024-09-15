@@ -8,13 +8,13 @@ class Cell:
 
         Args:
             index (int): The position of the cell as an index within the maze_list. Defaults to None.
-            neighbors (list[int]): The neighboring cells that can be reached from this cell. Defaults to empty list
+            neighbors (list[int]): The neighboring cells that can be reached from this cell by indices. Defaults to empty list
             is_wall (bool): Denotes if this cell is a wall or not. Defaults to wall
         """
         self.index = index
         self.neighbors = neighbors
         self.is_wall = is_wall
-        self.is_free = not(is_wall)
+        self.is_free = not (is_wall)
 
     def set_wall(self):
         self.is_wall = True
@@ -23,6 +23,9 @@ class Cell:
     def set_free(self):
         self.is_free = True
         self.is_wall = False
+
+    def set_neighbors(self, neighbors: list[int]):
+        self.neighbors = neighbors
 
     def get_neighbors(self):
         return self.neighbors

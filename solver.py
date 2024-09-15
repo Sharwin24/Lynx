@@ -2,49 +2,70 @@ from cell import Cell
 from maze import Maze, MazeInfo
 from collections import deque
 from maze_interpreter import MazeInterpreter
+from enum import Enum
+
+import numpy as np
 
 
 class Solver:
+    class SolverAlgorithm(Enum):
+        Wavefront = 0
+        DFS = 1
+        RecursiveBackTracking = 2
+        BeliefStatePlanner = 3
 
-    def __init__(self, a: str, m: Maze):
-        self.algo = a
+    def __init__(self, algo: SolverAlgorithm, m: Maze):
+        self.algo = algo
         self.maze = m
         self.path = []
         self.visited = []
 
+    # Chooses which solving algorithm to use
     def solve(self):
-        if self.algo == 0:
-            self.wavefront(self.maze)
-        elif self.algo == 1:
+        if self.algo == self.SolverAlgorithm.Wavefront:
+            self.wavefront()
+        elif self.algo == self.SolverAlgorithm.DFS:
             self.dfs(self.maze.maze_list[self.maze.start_index])
 
-    def wavefront(self, m):
+    # Wavefront algorithm
+    def wavefront(self):
         weight = [0] * len(self.maze.maze_list)
         goal = self.maze.maze_list[self.maze.goal_index]
+        weight[goal.get_index()] = 2
+        # print(self.visited)
+        # Assign walls
+        for c in self.maze.maze_list:
+            if c.get_wall():
+                weight[c.get_index()] = 1
+
+        w_vis = np.array(weight).reshape(self.maze.info.size)
+        print(f"Planner:\n {w_vis}")
 
         q = deque()
-
         q.append(goal)
         self.visited.append(goal.get_index())
         while q:
             front = q.popleft()
+            # print(front.get_index())
             for n in front.get_neighbors():
-                if n not in self.visited:
+                if not (n in self.visited) and not self.maze.maze_list[n].get_wall():
                     weight[n] = weight[front.get_index()] + 1
+                    self.visited.append(n)
                     q.append(self.maze.maze_list[n])
-                    self.visited.append(front.get_index())
+            w_vis = np.array(weight).reshape(self.maze.info.size)
+            # print(f"Planner:\n {w_vis}")
 
-        pos = self.maze.maze_list[self.maze.start_index]
-        self.path.append(pos.get_index())
-        while pos.get_index() != goal.get_index():
-            cur_weight = weight[pos.get_index()]
+        pos = self.maze.start_index
+        self.path.append(pos)
+        while pos != goal.get_index():
+            cur_weight = weight[pos]
             next_move = -1
-            for n in pos.get_neighbors():
-                if weight[n] < cur_weight:
+            for n in self.maze.maze_list[pos].get_neighbors():
+                if weight[n] > 1 and weight[n] < cur_weight:
                     cur_weight = weight[n]
                     next_move = n
             self.path.append(next_move)
-            pos = self.maze.maze_list[next_move]
+            pos = self.maze.maze_list[next_move].get_index()
 
     def dfs(self, pos: Cell):
         self.visited.append(pos.get_index())
@@ -67,25 +88,7 @@ def main():
     filepath = "sample_maze_3.txt"
     mi = MazeInterpreter()
     loaded_maze = mi.interpret_external(filepath)
-
-    # maze_list = []
-    # maze_list.append(Cell(0, [1], False))
-    # maze_list.append(Cell(1, [0, 2, 3], False))
-    # maze_list.append(Cell(2, [1], False))
-    # maze_list.append(Cell(3, [1, 4], False))
-    # maze_list.append(Cell(4, [5, 9, 3], False))
-    # maze_list.append(Cell(5, [4, 6, 8], False))
-    # maze_list.append(Cell(6, [5, 7], False))
-    # maze_list.append(Cell(7, [6, 8], False))
-    # maze_list.append(Cell(8, [5, 7], False))
-    # maze_list.append(Cell(9, [4, 10], False))
-    # maze_list.append(Cell(10, [9], False))
-    # m = Maze(info=MazeInfo(type=MazeInfo.MazeType.GridMaze, size=(4, 4)),
-    #          maze_list=maze_list,
-    #          start_index=0,
-    #          goal_index=10,
-    #          robot_index=0
-    #          )
+    print(loaded_maze)
 
     s = Solver(1, loaded_maze)
     s.solve()
@@ -94,8 +97,6 @@ def main():
     w = Solver(0, loaded_maze)
     w.solve()
     print(f"BFS Path: {w.path}")
-
-    print(loaded_maze)
 
 
 if __name__ == "__main__":

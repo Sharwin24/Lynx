@@ -65,7 +65,7 @@ class Maze:
         self.goal_index = goal_index
         self.robot_index = robot_index
 
-    def get_neighbors(self, cell: Cell, maze_list: list[Cell]) -> list[Cell]:
+    def get_neighbors(self, cell: Cell) -> list[Cell]:
         """finds the neighboring cell indices to the given cell index
 
         Args:
@@ -76,8 +76,7 @@ class Maze:
         """
         neighbors_list = []
 
-        if maze_list == []:
-            maze_list = self.maze_list
+        maze_list = self.maze_list
 
         if self.info.type == MazeInfo.MazeType.GridMaze:
 
@@ -104,6 +103,80 @@ class Maze:
 
         else:
             print("Unsupported maze type")
+
+    def get_opposite_cell(self, cell_W: Cell, cell_F: Cell) -> Cell | None:
+        """ Gets the cell in the direction opposite to F from W
+
+            Example:
+            _ _ _
+            F w A
+            _ _ _
+
+            In this case, the opposite cell to F from W is A
+
+        Args:
+            cell_W (Cell): The wall cell to skip over in the opposing direction of F
+            cell_F (Cell): The free cell that is adjacent to W, denoting the direction to skip over (opposite direction from W)
+
+        Returns:
+            Cell | None: A wall cell in the direction opposite to F from W, 
+            imagine going towards W from F but skipping over W to get the next cell.
+            If the cell is out of bounds, returns None
+        """
+        num_rows = self.info.size[0]
+        num_cols = self.info.size[1]
+        free_row = cell_F.get_index() // num_cols
+        free_col = cell_F.get_index() % num_cols
+        wall_row = cell_W.get_index() // num_cols
+        wall_col = cell_W.get_index() % num_cols
+
+        if wall_row == free_row - 1:  # If the wall is above the free cell
+            cell_A_row = free_row - 1
+            cell_A_col = free_col
+        elif wall_row == free_row + 1:  # If the wall is below the free cell
+            cell_A_row = free_row + 1
+            cell_A_col = free_col
+        elif wall_col == free_col - 1:  # If the wall is left of the free cell
+            cell_A_row = free_row
+            cell_A_col = free_col - 1
+        elif wall_col == free_col + 1:  # If the wall is right of the free cell
+            cell_A_row = free_row
+            cell_A_col = free_col + 1
+        else:
+            return None  # The row, col is out of bounds
+
+        # Convert opposite cell's row and column to an index in the maze_list
+        if cell_A_row < 0 or cell_A_row >= num_rows or cell_A_col < 0 or cell_A_col >= num_cols:
+            return None  # The row, col is out of bounds
+        else:
+            return self.maze_list[(cell_A_row * self.info.size[1]) + cell_A_col]
+
+    def get_cell(self, index: int) -> Cell:
+        """ Returns the cell at the given index
+
+        Args:
+            index (int): The index of the cell to be returned
+
+        Returns:
+            Cell: The cell at the given index
+        """
+        return self.maze_list[index]
+
+    def set_cell_free(self, index: int) -> None:
+        """ Sets the cell at the given index to be free
+
+        Args:
+            index (int): The index of the cell to be set free
+        """
+        self.maze_list[index].set_free()
+
+    def set_cell_wall(self, index: int) -> None:
+        """ Sets the cell at the given index to be a wall
+
+        Args:
+            index (int): The index of the cell to be set as a wall
+        """
+        self.maze_list[index].set_wall()
 
     def __repr__(self) -> str:
         """ Returns the string representation of the maze

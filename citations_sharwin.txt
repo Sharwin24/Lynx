@@ -1,0 +1,2 @@
+[1] "python - How can I randomly select (choose) an item from a list (get a random element)? - Stack Overflow", Stackoverflow, 2009. Available: https://stackoverflow.com/questions/306400/how-can-i-randomly-select-choose-an-item-from-a-list-get-a-random-element.
+[2] "python - How to make a class property? - Stack Overflow", Stackoverflow, 2022. Available: https://stackoverflow.com/questions/5189699/how-to-make-a-class-property.
