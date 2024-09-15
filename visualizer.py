@@ -37,9 +37,17 @@ class Visualizer:
             screen.fill("black")
             for j in range(rows):
                 for i in range(cols):
-                    # if mlist[j*cols + i - 1]
+                    if mlist[j*cols + i].is_wall:
+                        color = "black"
+                    elif mlist[j*cols + i].is_free:
+                        if (j*cols + i) == start:
+                            color = "green"
+                        elif (j*cols + i) == goal:
+                            color = "red"
+                        else:
+                            color = "white"
 
-                    pygame.draw.rect(screen, "white", pygame.Rect((top_left.x + i*screen.get_width()/cols) - rect_width/2, (top_left.y + j*screen.get_height()/rows)
+                    pygame.draw.rect(screen, color, pygame.Rect((top_left.x + i*screen.get_width()/cols) - rect_width/2, (top_left.y + j*screen.get_height()/rows)
                                                                    - rect_height/2, rect_width, rect_height))
 
 
@@ -49,7 +57,7 @@ class Visualizer:
 
         pygame.quit()
 
-maze_filepath = "sample_maze_1.txt"
+maze_filepath = "sample_maze_2.txt"
 interpreter = MazeInterpreter()
 maze = interpreter.interpret_external(maze_filepath)
 print(maze.info.size)
