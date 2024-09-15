@@ -13,6 +13,7 @@ class Solver:
         self.path = []
         self.visited = []
 
+    # Chooses which solving algorithm to use
     def solve(self):
         if self.algo == 0:
             self.wavefront()
