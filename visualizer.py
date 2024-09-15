@@ -11,12 +11,12 @@ class Visualizer:
         self.path = path
 
     def display_maze(self):
-        rows = maze.info.size[0]
-        cols = maze.info.size[1]
-        mlist = maze.maze_list
-        start = maze.start_index
-        goal = maze.goal_index
-        robot = maze.robot_index
+        rows = self.maze.info.size[0]
+        cols = self.maze.info.size[1]
+        mlist = self.maze.maze_list
+        start = self.maze.start_index
+        goal = self.maze.goal_index
+        robot = self.maze.robot_index
 
         
         pygame.init()
@@ -25,6 +25,7 @@ class Visualizer:
         rect_height = (screen.get_height() / rows) - 10
         rect_width = (screen.get_width() / cols) - 10
         clock = pygame.time.Clock()
+        font = pygame.font.Font(None, 32)
         running = True
         color = "white"
 
@@ -42,29 +43,36 @@ class Visualizer:
                     elif mlist[j*cols + i].is_free:
                         if (j*cols + i) == start:
                             color = "green"
+                            start_text = font.render('Start', True, "black")
+                            start_text_rect = start_text.get_rect()
+                            start_text_rect.center = (top_left.x + i*screen.get_width()/cols, top_left.y + j*screen.get_height()/rows)
                         elif (j*cols + i) == goal:
                             color = "red"
+                            goal_text = font.render('Goal', True, "black")
+                            goal_text_rect = goal_text.get_rect()
+                            goal_text_rect.center = (top_left.x + i*screen.get_width()/cols, top_left.y + j*screen.get_height()/rows)
                         else:
                             color = "white"
 
                     pygame.draw.rect(screen, color, pygame.Rect((top_left.x + i*screen.get_width()/cols) - rect_width/2, (top_left.y + j*screen.get_height()/rows)
                                                                    - rect_height/2, rect_width, rect_height))
 
-
+            screen.blit(start_text, start_text_rect)
+            screen.blit(goal_text, goal_text_rect)
             pygame.display.flip()
 
             clock.tick(60)
 
         pygame.quit()
 
-maze_filepath = "sample_maze_2.txt"
-interpreter = MazeInterpreter()
-maze = interpreter.interpret_external(maze_filepath)
-print(maze.info.size)
-dfs_solver = Solver(1, maze)
-dfs_solver.solve()
-# print(f"DFS Path: {dfs_solver.path}")
+# maze_filepath = "sample_maze_2.txt"
+# interpreter = MazeInterpreter()
+# maze = interpreter.interpret_external(maze_filepath)
+# print(maze.info.size)
+# bfs_solver = Solver(0, maze)
+# bfs_solver.solve()
+# print(f"DFS Path: {bfs_solver.path}")
 # print(maze)
 
-vis = Visualizer(maze, dfs_solver.path)
-vis.display_maze()
+# vis = Visualizer(maze, bfs_solver.path)
+# vis.display_maze()
