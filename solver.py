@@ -32,7 +32,7 @@ class Solver:
         weight = [0] * len(self.maze.maze_list)
         goal = self.maze.maze_list[self.maze.goal_index]
         weight[goal.get_index()] = 2
-        print(self.visited)
+        # print(self.visited)
         # Assign walls
         for c in self.maze.maze_list:
             if c.get_wall():

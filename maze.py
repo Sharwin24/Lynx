@@ -65,7 +65,7 @@ class Maze:
         self.goal_index = goal_index
         self.robot_index = robot_index
 
-    def get_neighbors(self, cell: Cell, maze_list: list[Cell] = []) -> list[Cell]:
+    def get_neighbors(self, cell: Cell) -> list[Cell]:
         """finds the neighboring cell indices to the given cell index
 
         Args:
@@ -76,8 +76,7 @@ class Maze:
         """
         neighbors_list = []
 
-        if maze_list == []:
-            maze_list = self.maze_list
+        maze_list = self.maze_list
 
         if self.info.type == MazeInfo.MazeType.GridMaze:
 
@@ -124,10 +123,12 @@ class Maze:
             imagine going towards W from F but skipping over W to get the next cell.
             If the cell is out of bounds, returns None
         """
-        free_row = cell_F.get_index() // self.info.size[1]
-        free_col = cell_F.get_index() % self.info.size[1]
-        wall_row = cell_W.get_index() // self.info.size[1]
-        wall_col = cell_W.get_index() % self.info.size[1]
+        num_rows = self.info.size[0]
+        num_cols = self.info.size[1]
+        free_row = cell_F.get_index() // num_cols
+        free_col = cell_F.get_index() % num_cols
+        wall_row = cell_W.get_index() // num_cols
+        wall_col = cell_W.get_index() % num_cols
 
         if wall_row == free_row - 1:  # If the wall is above the free cell
             cell_A_row = free_row - 1
@@ -142,10 +143,13 @@ class Maze:
             cell_A_row = free_row
             cell_A_col = free_col + 1
         else:
-            return None  # The row, col isn't in the maze (out of bounds)
+            return None  # The row, col is out of bounds
 
-        # Convert opposite cell's row and column to index
-        return self.maze_list[(cell_A_col * self.info.size[1]) + cell_A_row]
+        # Convert opposite cell's row and column to an index in the maze_list
+        if cell_A_row < 0 or cell_A_row >= num_rows or cell_A_col < 0 or cell_A_col >= num_cols:
+            return None  # The row, col is out of bounds
+        else:
+            return self.maze_list[(cell_A_row * self.info.size[1]) + cell_A_col]
 
     def get_cell(self, index: int) -> Cell:
         """ Returns the cell at the given index

@@ -59,9 +59,10 @@ else:  # Bypass user input and run testing code
     # Generate a maze
     creator = Generator()
     maze = creator.generate_rectangular_maze(
-        MazeInfo(MazeInfo.MazeType.GridMaze, size=(16, 16)))
+        MazeInfo(MazeInfo.MazeType.GridMaze, size=(10, 10)))
     # Solve the maze and obtain the solution
     solver = Solver(Solver.SolverAlgorithm.Wavefront, maze)
     solver.solve()
     # Visualize the maze and the solved path
-    print(f"Maze:\n{maze}\nPath: {solver.path}\n")
+    print(
+        f"Start {maze.start_index} Goal {maze.goal_index} Maze:\n{maze}\nPath: {solver.path}\n")
