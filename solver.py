@@ -19,7 +19,8 @@ class Solver:
             self.wavefront()
         elif self.algo == 1:
             self.dfs(self.maze.maze_list[self.maze.start_index])
-
+    
+    #Wavefront algorithm
     def wavefront(self):
         weight = [0] * len(self.maze.maze_list)
         goal = self.maze.maze_list[self.maze.goal_index]
