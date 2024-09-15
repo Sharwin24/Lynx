@@ -26,6 +26,7 @@ class Visualizer:
         rect_width = (screen.get_width() / cols) - 10
         clock = pygame.time.Clock()
         running = True
+        color = "white"
 
 
         while running:
@@ -36,6 +37,8 @@ class Visualizer:
             screen.fill("black")
             for j in range(rows):
                 for i in range(cols):
+                    # if mlist[j*cols + i - 1]
+
                     pygame.draw.rect(screen, "white", pygame.Rect((top_left.x + i*screen.get_width()/cols) - rect_width/2, (top_left.y + j*screen.get_height()/rows)
                                                                    - rect_height/2, rect_width, rect_height))
 
@@ -46,10 +49,10 @@ class Visualizer:
 
         pygame.quit()
 
-maze_filepath = "sample_maze_2.txt"
+maze_filepath = "sample_maze_1.txt"
 interpreter = MazeInterpreter()
 maze = interpreter.interpret_external(maze_filepath)
-print(maze.info.size[0])
+print(maze.info.size)
 dfs_solver = Solver(1, maze)
 dfs_solver.solve()
 # print(f"DFS Path: {dfs_solver.path}")
