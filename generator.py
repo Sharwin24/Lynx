@@ -86,7 +86,8 @@ class Generator:
                 wall_list.extend(new_walls)
             wall_list.remove(random_wall)
         # Pick a random goal index from the list of free cells
-        free_cells = [c for cell in generated_maze.maze_list if cell.is_free]
+        free_cells = list(
+            filter(lambda c: c.is_free, generated_maze.maze_list))
         # goal_index = free_cells[random.randint(0, len(free_cells) - 1)]
         goal_index = random.choice(free_cells).get_index()
         print(f"Goal Index {goal_index}")
