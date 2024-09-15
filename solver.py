@@ -6,7 +6,7 @@ import numpy as np
 
 
 class Solver:
-
+    # Contructor for solver class
     def __init__(self, a: str, m: Maze):
         self.algo = a
         self.maze = m
