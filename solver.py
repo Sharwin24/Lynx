@@ -4,6 +4,8 @@ from collections import deque
 from maze_interpreter import MazeInterpreter
 from enum import Enum
 
+import numpy as np
+
 
 class Solver:
     class SolverAlgorithm(Enum):
@@ -20,9 +22,9 @@ class Solver:
 
     # Chooses which solving algorithm to use
     def solve(self):
-        if self.algo == 0:
+        if self.algo == self.SolverAlgorithm.Wavefront:
             self.wavefront()
-        elif self.algo == 1:
+        elif self.algo == self.SolverAlgorithm.DFS:
             self.dfs(self.maze.maze_list[self.maze.start_index])
 
     # Wavefront algorithm
