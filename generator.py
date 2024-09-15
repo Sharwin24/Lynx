@@ -61,7 +61,7 @@ class Generator:
         )
         print(f"Start Index {start_index} \nGenerated Maze {generated_maze}")
         # Set start cell as free and create empty wall_list
-        maze_ls[start_index].set_free(True)
+        maze_ls[start_index].set_free()
         wall_list: list[Cell] = []
         # Get neighbors of start cell and add to wall list
         for n in generated_maze.get_neighbors(cell=maze_ls[start_index], maze_list=maze_ls):
@@ -76,8 +76,8 @@ class Generator:
                 free_neighbor = list(filter(
                     lambda c: c.is_wall, random_wall_neighbors))
                 # Set both the free neighbor and the wall we got here from to free
-                free_neighbor.set_free(True)
-                random_wall.set_free(True)
+                free_neighbor.set_free()
+                random_wall.set_free()
                 # Add the walls of free_neighbor to wall_list
                 free_neighbor_walls = list(filter(lambda c: c.is_wall, generated_maze.get_neighbors(
                     cell=free_neighbor, maze_list=maze_ls)))
@@ -104,4 +104,8 @@ if __name__ == '__main__':
         MazeInfo(MazeInfo.MazeType.GridMaze, (10, 10)),
         start=(0, 0)
     )
+
+    for i in range(len(maze.maze_list)):
+        print(maze.maze_list[i].is_free)
+    
     print(maze)

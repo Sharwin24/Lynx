@@ -70,7 +70,7 @@ class Solver:
 
 def main():
 
-    filepath = "sample_maze_1.txt"
+    filepath = "sample_maze_3.txt"
     mi = MazeInterpreter()
     loaded_maze = mi.interpret_external(filepath)
 
@@ -100,6 +100,8 @@ def main():
     w = Solver(0, loaded_maze)
     w.solve()
     print(f"BFS Path: {w.path}")
+
+    print(loaded_maze)
 
 
 if __name__ == "__main__":
