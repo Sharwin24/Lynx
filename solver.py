@@ -2,13 +2,18 @@ from cell import Cell
 from maze import Maze, MazeInfo
 from collections import deque
 from maze_interpreter import MazeInterpreter
-import numpy as np
+from enum import Enum
 
 
 class Solver:
-    # Contructor for solver class
-    def __init__(self, a: str, m: Maze):
-        self.algo = a
+    class SolverAlgorithm(Enum):
+        Wavefront = 0
+        DFS = 1
+        RecursiveBackTracking = 2
+        BeliefStatePlanner = 3
+
+    def __init__(self, algo: SolverAlgorithm, m: Maze):
+        self.algo = algo
         self.maze = m
         self.path = []
         self.visited = []
@@ -19,8 +24,8 @@ class Solver:
             self.wavefront()
         elif self.algo == 1:
             self.dfs(self.maze.maze_list[self.maze.start_index])
-    
-    #Wavefront algorithm
+
+    # Wavefront algorithm
     def wavefront(self):
         weight = [0] * len(self.maze.maze_list)
         goal = self.maze.maze_list[self.maze.goal_index]
@@ -39,14 +44,14 @@ class Solver:
         self.visited.append(goal.get_index())
         while q:
             front = q.popleft()
-            #print(front.get_index())
+            # print(front.get_index())
             for n in front.get_neighbors():
                 if not (n in self.visited) and not self.maze.maze_list[n].get_wall():
                     weight[n] = weight[front.get_index()] + 1
                     self.visited.append(n)
                     q.append(self.maze.maze_list[n])
             w_vis = np.array(weight).reshape(self.maze.info.size)
-            #print(f"Planner:\n {w_vis}")
+            # print(f"Planner:\n {w_vis}")
 
         pos = self.maze.start_index
         self.path.append(pos)
@@ -90,7 +95,6 @@ def main():
     w = Solver(0, loaded_maze)
     w.solve()
     print(f"BFS Path: {w.path}")
-
 
 
 if __name__ == "__main__":
