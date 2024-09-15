@@ -1,0 +1,1 @@
+[1] "python - How can I randomly select (choose) an item from a list (get a random element)? - Stack Overflow", Stackoverflow, 2009. Available: https://stackoverflow.com/questions/306400/how-can-i-randomly-select-choose-an-item-from-a-list-get-a-random-element.
