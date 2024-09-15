@@ -41,7 +41,9 @@ class MazeInterpreter:
             for line in file.readlines():
                 # print(line)
                 # Need to strip line return to make lines consistent
+                ############################### Begin_Citation [1] ############################
                 cols = len(line.strip("\n"))
+                ############################### End_Citation [1]  #############################
                 
                 for char in line:
                     match char:
@@ -59,8 +61,10 @@ class MazeInterpreter:
                             current_cell = Cell(cell_index, self.find_neighbors(
                                 cell_index, rows, cols), False)
                             goal_index = cell_index
+                ############################### Begin_Citation [2] ############################
                         case _:
                             continue
+                ############################### End_Citation [2]  #############################
 
                     cell_index += 1
                     cell_list.append(current_cell)
@@ -114,12 +118,8 @@ if __name__ == "__main__":
     test_ind = 26
     print(f"The neighbors of {test_ind} is {maze.maze_list[test_ind].get_neighbors()}")
 
-    # for i in range(len(maze.maze_list)):
-    #     cell_ind = maze.maze_list[i].get_index()
-    #     print(f"{cell_ind} is {maze.maze_list[i].get_wall()}")
     print(maze)
 
 
-
-#
-# [1]"python - How to do an else (default) in match-case? - Stack Overflow", Stackoverflow, 2021. Available: https://stackoverflow.com/questions/68804209/how-to-do-an-else-default-in-match-case. [Accessed 12 September. 2024].
+# [1]D. Creates, "Removing Trailing Newline in Python Strings | by Doug Creates | Medium", Medium, 2024. Available: https://medium.com/@Doug-Creates/removing-trailing-newline-in-python-strings-0bce6b94ed0c#:~:text=# To remove a trailing newline,removing characters from both ends. [Accessed 15 September. 2024].
+# [2]"python - How to do an else (default) in match-case? - Stack Overflow", Stackoverflow, 2021. Available: https://stackoverflow.com/questions/68804209/how-to-do-an-else-default-in-match-case. [Accessed 12 September. 2024].
