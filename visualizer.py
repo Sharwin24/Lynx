@@ -25,3 +25,10 @@ class Ascii_Vizualizer:
             os.system("clear")
             print(step[i])
             time.sleep(0.5)
+
+
+class Visualizer:
+
+    def __init__(self, maze, path):
+        self.maze = maze
+        self.path = path
