@@ -16,7 +16,7 @@ def interactive_mode():
     print("Interactive mode selected")
     maze_type = input(
         f"Enter the type of Maze as an integer matching the mode's value\n{[e for e in MazeInfo.MazeType]}:")
-    if maze_type.isdigit() and int(maze_type) in [e.value for e in UserType]:
+    if maze_type.isdigit() and int(maze_type) in [e.value for e in MazeInfo.MazeType]:
         if int(maze_type) == MazeInfo.MazeType.GridMaze.value:
             maze_size = input(
                 f"Creating Grid Maze! Please enter the size as a tuple of (num_rows, num_cols): ")
