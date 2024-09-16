@@ -1,2 +1,4 @@
 [1S] "python - How can I randomly select (choose) an item from a list (get a random element)? - Stack Overflow", Stackoverflow, 2009. Available: https://stackoverflow.com/questions/306400/how-can-i-randomly-select-choose-an-item-from-a-list-get-a-random-element.
 [2S] "python - How to make a class property? - Stack Overflow", Stackoverflow, 2022. Available: https://stackoverflow.com/questions/5189699/how-to-make-a-class-property.
+[3S] "Python | Convert String to Tuple - GeeksforGeeks", Geeksforgeeks, 19 Apr. 2023. Available: https://geeksforgeeks.org/python-convert-string-to-tuple/. [Accessed 16 September. 2024].
+[4S] "Hexagonal Grids", Redblobgames, Oct. 2021. Available: https://redblobgames.com/grids/hexagons/. [Accessed 16 September. 2024].
