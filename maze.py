@@ -274,10 +274,9 @@ class HexMaze:
         Returns:
             neighbors_list([ind]): list of indices of found neighbors
         """
+        if cell == None:
+            return []
         neighbors_list = []
-
-        maze_list = self.maze_list
-
         if self.info.type == MazeInfo.MazeType.HexMaze:
 
             index = cell.get_index()
@@ -295,10 +294,12 @@ class HexMaze:
                 filter(lambda t: all(x < boundary for x in t), neighbor_index))
 
             for i in filtered_neighbor_ind:
-                neigh_cell = filter(lambda hc: hc.get_index()
-                                    == filtered_neighbor_ind[i], maze_list)
-                neighbors_list.append(neigh_cell)
-
+                try:
+                    neigh_cell = list(
+                        filter(lambda hc: hc.get_index() == i, self.maze_list))[0]
+                    neighbors_list.append(neigh_cell)
+                except:
+                    pass
             return neighbors_list
 
         else:
@@ -325,7 +326,12 @@ class HexMaze:
         """
         new_index = ((cell_W.get_index()[0] - cell_F.get_index()[0]) + cell_W.get_index()[0],
                      (cell_W.get_index()[1] - cell_F.get_index()[1]) + cell_W.get_index()[1])
-        return self.maze_list[new_index]
+        try:
+            opp_cell = list(filter(lambda c: c.get_index()
+                                   == new_index, self.maze_list))[0]
+            return opp_cell
+        except:
+            pass
 
     def get_cell(self, index: tuple[int, int]) -> Cell:
         """ Returns the cell at the given index
@@ -354,4 +360,9 @@ class HexMaze:
         Args:
             index (int): The index of the cell to be set as a wall
         """
-        self.maze_list[index].set_wall()
+        cell = list(filter(lambda c: c.get_index()
+                    == index, self.maze_list))[0]
+        cell.set_wall()
+
+    def __repr__(self) -> str:
+        return f"HexMaze\n{self.maze_list}"

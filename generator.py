@@ -112,8 +112,8 @@ class Generator:
             for r in range(-hex_maze_size + 1, hex_maze_size):
                 if (abs(-q - r) < hex_maze_size):
                     maze_index_list.append((q, r))
-        print(
-            f"Maze Indices {maze_index_list}, with {len(maze_index_list)} hexes")
+        # print(
+        #     f"Maze Indices {maze_index_list}, with {len(maze_index_list)} hexes")
         maze_cell_list: list[HexCell] = []
         # Iterate over maze_list and create HexCell objects
         for index in maze_index_list:
@@ -124,8 +124,7 @@ class Generator:
         # If no start was given then pick a random one
         if start == None:
             start = random.choice(maze_index_list)
-        generated_maze = HexMaze(
-            MazeInfo.MazeType.HexMaze, maze_cell_list, start)
+        generated_maze = HexMaze(info, maze_cell_list, start)
         '''
         Randomly choose a cell Q and mark it as free, let's pick our start index
         Add cell Q's neighbors to the wall list
@@ -157,7 +156,7 @@ class Generator:
                 )
                 random_wall.set_free()
                 new_walls = [c for c in generated_maze.get_neighbors(
-                    cell=opposite_cell) if c.is_wall]
+                    cell=opposite_cell) if c != None and c.is_wall]
                 wall_list.extend(new_walls)
             wall_list.remove(random_wall)
         free_cells = list(
