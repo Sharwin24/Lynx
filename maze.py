@@ -177,6 +177,13 @@ class Maze:
             index (int): The index of the cell to be set as a wall
         """
         self.maze_list[index].set_wall()
+    
+    def set_robot_index(self, index: int) -> None:
+        """ Sets the robot index
+
+        Args:
+            index (int): The index of the cell that the robot will occupy
+        """
 
     def __repr__(self) -> str:
         """ Returns the string representation of the maze

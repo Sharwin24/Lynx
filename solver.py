@@ -6,13 +6,28 @@ from enum import Enum
 
 import numpy as np
 
-
 class Solver:
     class SolverAlgorithm(Enum):
         Wavefront = 0
         DFS = 1
         RecursiveBackTracking = 2
         BeliefStatePlanner = 3
+    
+    class Node:
+        def __init__(self, state, index):
+            self.state = state
+            self.index = index
+            self.chil = []
+        
+        def get_state(self):
+            return self.state
+        
+        def get_index(self):
+            return self.index
+        
+        def set_child(self, node):
+            self.chil.append[node]
+    
 
     def __init__(self, algo: SolverAlgorithm, m: Maze):
         self.algo = algo
@@ -83,7 +98,31 @@ class Solver:
             self.path.pop()
             return False
 
+    def belief_state(self, m: Maze):
+        s = deque()
+        graph = []
+        curr = self.Node(0, m.robot_index)
+        s.append(curr)
 
+        while s:
+            curr = s.pop()
+            m.set_robot_index(curr.get_index())
+            if curr.get_index() == m.goal_index:
+                return
+            for n in m.maze_list[curr.i].get_neighbors():
+                child = None
+                if not n.get_wall():
+                    child = self.Node(0, n)
+                    s.append(child)
+                else:
+                    child = self.Node(1, n)
+                curr.set_child(child)
+
+
+                    
+
+
+        
 def main():
 
     filepath = "sample_maze_3.txt"
@@ -91,13 +130,17 @@ def main():
     loaded_maze = mi.interpret_external(filepath)
     print(loaded_maze)
 
-    s = Solver(1, loaded_maze)
+    s = Solver(Solver.SolverAlgorithm.DFS, loaded_maze)
     s.solve()
     print(f"DFS Path: {s.path}")
 
-    w = Solver(0, loaded_maze)
+    w = Solver(Solver.SolverAlgorithm.Wavefront, loaded_maze)
     w.solve()
     print(f"BFS Path: {w.path}")
+
+    b = Solver(Solver.SolverAlgorithm.BeliefStatePlanner, loaded_maze)
+    b.solve()
+    print(f"BS Path: {b.path}")
 
 
 if __name__ == "__main__":
