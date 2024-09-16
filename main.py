@@ -8,7 +8,7 @@ from enum import Enum
 from generator import Generator
 from maze import Maze, MazeInfo
 from solver import Solver
-from visualizer import *
+from visualizer import Visualizer
 from maze_interpreter import MazeInterpreter
 
 
@@ -31,6 +31,7 @@ def interactive_mode():
             start = None
             if maze_start != "":
                 start = tuple(map(int, maze_start.split(',')))
+            print(f"Using Start {start}")
             creator = Generator()
             grid_maze = creator.generate_rectangular_maze(
                 MazeInfo(MazeInfo.MazeType.GridMaze, size), start)
@@ -42,6 +43,8 @@ def interactive_mode():
             print(f"Maze:\n{grid_maze}")
             print(f"Wavefront Solver's Path: {wavefront_solver.path}")
             print(f"DFS Solver's Path: {dfs_solver.path}")
+            viz = Visualizer(grid_maze, wavefront_solver.path)
+            viz.display_maze()
         elif int(maze_type) == MazeInfo.MazeType.HexMaze.value:
             maze_size = input(
                 f"Creating Hex Maze! Please enter the size as an int representing the radius in hexagons: ")
@@ -70,6 +73,8 @@ def interactive_mode():
             print(f"Hex Maze:\n{hex_maze}")
             print(f"Wavefront Solver's Path: {wavefront_solver.path}")
             print(f"DFS Solver's Path: {dfs_solver.path}")
+            viz = Visualizer(hex_maze, wavefront_solver.path)
+            viz.display_maze()
     else:
         print("Invalid maze type selected")
 
