@@ -25,7 +25,7 @@ class Visualizer:
         rect_height = (screen.get_height() / rows) - 10
         rect_width = (screen.get_width() / cols) - 10
         clock = pygame.time.Clock()
-        font = pygame.font.Font(None, 32)
+        font = pygame.font.Font(None, 24)
         running = True
         color = "white"
 
@@ -34,7 +34,7 @@ class Visualizer:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
-
+            
             screen.fill("black")
             for j in range(rows):
                 for i in range(cols):
@@ -51,17 +51,17 @@ class Visualizer:
                             goal_text = font.render('Goal', True, "black")
                             goal_text_rect = goal_text.get_rect()
                             goal_text_rect.center = (top_left.x + i*screen.get_width()/cols, top_left.y + j*screen.get_height()/rows)
+                        elif (j*cols + i) in self.path:
+                            color = "cyan"
                         else:
                             color = "white"
 
                     pygame.draw.rect(screen, color, pygame.Rect((top_left.x + i*screen.get_width()/cols) - rect_width/2, (top_left.y + j*screen.get_height()/rows)
-                                                                   - rect_height/2, rect_width, rect_height))
+                                                                    - rect_height/2, rect_width, rect_height))
 
             screen.blit(start_text, start_text_rect)
             screen.blit(goal_text, goal_text_rect)
             pygame.display.flip()
-
-            clock.tick(60)
 
         pygame.quit()
 
@@ -71,22 +71,22 @@ maze = interpreter.interpret_external(maze_filepath)
 print(maze.info.size)
 
 
-dfs_solver = Solver(Solver.SolverAlgorithm.DFS, maze)
-dfs_solver.solve()
-print(f"DFS Path: {dfs_solver.path}")
-print(dfs_solver.path == [])
-print(maze)
-
-# wavefront_solver = Solver(Solver.SolverAlgorithm.Wavefront, maze)
-# wavefront_solver.solve()
-# print(f"Wavefront Path: {wavefront_solver.path}")
-# print(wavefront_solver.path == [])
+# dfs_solver = Solver(Solver.SolverAlgorithm.DFS, maze)
+# dfs_solver.solve()
+# print(f"DFS Path: {dfs_solver.path}")
+# print(dfs_solver.path == [])
 # print(maze)
 
+wavefront_solver = Solver(Solver.SolverAlgorithm.Wavefront, maze)
+wavefront_solver.solve()
+print(f"Wavefront Path: {wavefront_solver.path}")
+print(wavefront_solver.path == [])
+print(maze)
 
 
-vis1 = Visualizer(maze, dfs_solver.path)
-vis1.display_maze()
 
-# vis2 = Visualizer(maze, wavefront_solver.path)
-# vis2.display_maze()
+# vis1 = Visualizer(maze, dfs_solver.path)
+# vis1.display_maze()
+
+vis2 = Visualizer(maze, wavefront_solver.path)
+vis2.display_maze()
