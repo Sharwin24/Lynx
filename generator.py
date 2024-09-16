@@ -34,7 +34,7 @@ class Generator:
           _ _ _     6 7 8
         To convert a (r,c) to an index: index = (c * num_columns) + r
         '''
-        if start == None:  # Randomize start position if not already picked
+        if start == None or start[0] < 0 or start[0] >= num_rows or start[1] < 0 or start[1] >= num_cols:  # Randomize start position if not already picked or start is out of bounds
             start = (random.randint(0, num_rows - 1),
                      random.randint(0, num_cols - 1))
         # Convert the (row, column) position to the index in maze_list
