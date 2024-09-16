@@ -66,7 +66,9 @@ class Generator:
         wall_list.extend(generated_maze.get_neighbors(
             cell=generated_maze.get_cell(start_index)))
         while wall_list:
-            random_wall = random.choice(wall_list)  # Citation [1S]
+            ################### Begin_Citation [1S] ###################
+            random_wall = random.choice(wall_list)
+            ################### End_Citation [1S] ###################
             # If random_wall's neighbors has exactly one free cell
             random_wall_neighbors = generated_maze.get_neighbors(
                 cell=random_wall)
