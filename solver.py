@@ -27,7 +27,7 @@ class Solver:
             return self.index
         
         def set_child(self, node):
-            self.chil.append[node]
+            self.chil.append(node)
     
 
     def __init__(self, algo: SolverAlgorithm, m: Maze):
@@ -42,6 +42,8 @@ class Solver:
             self.wavefront()
         elif self.algo == self.SolverAlgorithm.DFS:
             self.dfs(self.maze.maze_list[self.maze.start_index])
+        elif self.algo == self.SolverAlgorithm.BeliefStatePlanner:
+            self.belief_state()
 
     # Wavefront algorithm
     def wavefront(self):
@@ -99,24 +101,25 @@ class Solver:
             self.path.pop()
             return False
 
-    def belief_state(self, m: Maze):
+    def belief_state(self):
         s = deque()
         graph = []
-        curr = self.Node(0, m.robot_index)
+        curr = Solver.Node(0, self.maze.robot_index)
         s.append(curr)
 
         while s:
             curr = s.pop()
-            m.set_robot_index(curr.get_index())
-            if curr.get_index() == m.goal_index:
+            self.maze.set_robot_index(curr.get_index())
+            self.path.append(curr.get_index())
+            if curr.get_index() == self.maze.goal_index:
                 return
-            for n in m.maze_list[curr.i].get_neighbors():
+            for n in self.maze.maze_list[curr.get_index()].get_neighbors():
                 child = None
-                if not n.get_wall():
-                    child = self.Node(0, n)
+                if not self.maze.maze_list[n].get_wall():
+                    child = Solver.Node(0, n)
                     s.append(child)
                 else:
-                    child = self.Node(1, n)
+                    child = Solver.Node(1, n)
                 curr.set_child(child)
 
 
