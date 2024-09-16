@@ -3,6 +3,7 @@ from maze import Maze, MazeInfo
 from collections import deque
 from maze_interpreter import MazeInterpreter
 from enum import Enum
+from visualizer import Ascii_Vizualizer
 
 import numpy as np
 
@@ -39,7 +40,7 @@ class Solver:
                 weight[c.get_index()] = 1
 
         w_vis = np.array(weight).reshape(self.maze.info.size)
-        print(f"Planner:\n {w_vis}")
+        # print(f"Planner:\n {w_vis}")
 
         q = deque()
         q.append(goal)
@@ -83,19 +84,24 @@ class Solver:
             self.path.pop()
             return False
 
-
 def main():
 
-    filepath = "sample_maze_3.txt"
+    filepath = "sample_maze_2.txt"
     mi = MazeInterpreter()
     loaded_maze = mi.interpret_external(filepath)
     print(loaded_maze)
 
-    s = Solver(1, loaded_maze)
+    s = Solver(Solver.SolverAlgorithm.DFS, loaded_maze)
     s.solve()
     print(f"DFS Path: {s.path}")
 
-    w = Solver(0, loaded_maze)
+    viz = Ascii_Vizualizer(loaded_maze, s.path)
+    viz.populate()
+    viz.ascii_play()
+
+
+
+    w = Solver(Solver.SolverAlgorithm.Wavefront, loaded_maze)
     w.solve()
     print(f"BFS Path: {w.path}")
 
