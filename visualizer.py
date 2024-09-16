@@ -2,6 +2,8 @@ from maze import Maze
 import os
 import time
 
+
+## Kinda broken and don't have time to fix yet. Just don't call this.
 class Ascii_Vizualizer:
 
     def __init__(self, maze:Maze, path:list):

@@ -1,5 +1,5 @@
 from enum import Enum
-from cell import Cell
+from cell import Cell, Hex_Cell
 
 
 class MazeInfo:
@@ -224,3 +224,145 @@ class Maze:
             output_str += "\n"
 
         return output_str
+
+
+
+class Hex_Maze:
+    """ A class representing the entire maze, containing the list of cell objects, the type of maze, and the start/goal cells
+    """
+
+    def __init__(self, info: MazeInfo, maze_list: list[Cell] = [], start_index: tuple = None, goal_index: tuple = None, robot_index: tuple = None) -> None:
+        """ Creates a maze object with optional arguments to create an object with initialized values.
+            Default behavior will create an empty maze which will need the fields to be populated by using the Generator.
+            See generator.py for the logic behind populating these fields.
+            The two options for generating a maze are:
+            1. Generating the maze with generator and populating the Maze using the Maze.__init__() function with all the arguments
+            2. Creating an empty maze using Maze.__init()__ without any arguments, then generating a maze with the generator and populating the maze using Maze.populate_maze()
+
+        Args:
+            info (MazeInfo): The information about this maze including its type and size.
+            maze_list (list[Cell], optional): The maze represented as a list of Cell objects. Defaults to None.
+            start_index (tuple, optional): The start cell represented as an index within the maze_list. Defaults to None.
+            goal_index (tuple, optional): The goal cell represented as an index within the maze_list. Defaults to None.
+            robot_index (tuple, optional): The cell the robot occupies as an index within the maze_list. Defaults to None.
+        """
+        self.info = info
+        self.maze_list = maze_list
+        self.start_index = start_index
+        self.goal_index = goal_index
+        self.robot_index = robot_index
+
+    def populate_maze(self, maze_list: list[Cell], start_index: tuple, goal_index: tuple, robot_index: tuple) -> None:
+        """ This method will populate the fields for this maze. This should be used if the Maze object was already constructed without the fields populated.
+
+        Args:
+            maze_list (list[Cell]): The maze represented as a list of Cell objects. 
+            start_index (int): The start cell represented as an index within the maze_list
+            goal_index (int): The goal cell represented as an index within the maze_list
+            robot_index (int): The cell the robot occupies as an index within the maze_list
+        """
+        self.maze_list = maze_list
+        self.start_index = start_index
+        self.goal_index = goal_index
+        self.robot_index = robot_index
+
+    def get_neighbors(self, cell: Cell) -> list[Cell]:
+        """finds the neighboring cell indices to the given cell index
+
+        Args:
+            cell (Cell): index of the target cell
+
+        Returns:
+            neighbors_list([ind]): list of indices of found neighbors
+        """
+        neighbors_list = []
+
+        maze_list = self.maze_list
+
+        if self.info.type == MazeInfo.MazeType.HexMaze:
+
+            index = cell.get_index()
+            q = index[0]
+            r = index[1]
+            s = -q -r
+
+            
+
+            return neighbors_list
+
+        else:
+            print("Unsupported maze type")
+
+    def get_opposite_cell(self, cell_W: Cell, cell_F: Cell) -> Cell | None:
+        """ Gets the cell in the direction opposite to F from W
+
+            Example:
+            _ _ _
+            F w A
+            _ _ _
+
+            In this case, the opposite cell to F from W is A
+
+        Args:
+            cell_W (Cell): The wall cell to skip over in the opposing direction of F
+            cell_F (Cell): The free cell that is adjacent to W, denoting the direction to skip over (opposite direction from W)
+
+        Returns:
+            Cell | None: A wall cell in the direction opposite to F from W, 
+            imagine going towards W from F but skipping over W to get the next cell.
+            If the cell is out of bounds, returns None
+        """
+        num_rows = self.info.size[0]
+        num_cols = self.info.size[1]
+        free_row = cell_F.get_index() // num_cols
+        free_col = cell_F.get_index() % num_cols
+        wall_row = cell_W.get_index() // num_cols
+        wall_col = cell_W.get_index() % num_cols
+
+        if wall_row == free_row - 1:  # If the wall is above the free cell
+            cell_A_row = free_row - 1
+            cell_A_col = free_col
+        elif wall_row == free_row + 1:  # If the wall is below the free cell
+            cell_A_row = free_row + 1
+            cell_A_col = free_col
+        elif wall_col == free_col - 1:  # If the wall is left of the free cell
+            cell_A_row = free_row
+            cell_A_col = free_col - 1
+        elif wall_col == free_col + 1:  # If the wall is right of the free cell
+            cell_A_row = free_row
+            cell_A_col = free_col + 1
+        else:
+            return None  # The row, col is out of bounds
+
+        # Convert opposite cell's row and column to an index in the maze_list
+        if cell_A_row < 0 or cell_A_row >= num_rows or cell_A_col < 0 or cell_A_col >= num_cols:
+            return None  # The row, col is out of bounds
+        else:
+            return self.maze_list[(cell_A_row * self.info.size[1]) + cell_A_col]
+
+    def get_cell(self, index: int) -> Cell:
+        """ Returns the cell at the given index
+
+        Args:
+            index (int): The index of the cell to be returned
+
+        Returns:
+            Cell: The cell at the given index
+        """
+        return self.maze_list[index]
+
+    def set_cell_free(self, index: int) -> None:
+        """ Sets the cell at the given index to be free
+
+        Args:
+            index (int): The index of the cell to be set free
+        """
+        self.maze_list[index].set_free()
+
+    def set_cell_wall(self, index: int) -> None:
+        """ Sets the cell at the given index to be a wall
+
+        Args:
+            index (int): The index of the cell to be set as a wall
+        """
+        self.maze_list[index].set_wall()
