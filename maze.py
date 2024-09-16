@@ -55,7 +55,7 @@ class Maze:
         """ This method will populate the fields for this maze. This should be used if the Maze object was already constructed without the fields populated.
 
         Args:
-            maze_list (list[Cell]): The maze represented as a list of Cell objects. 
+            maze_list (list[Cell]): The maze represented as a list of Cell objects.
             start_index (int): The start cell represented as an index within the maze_list
             goal_index (int): The goal cell represented as an index within the maze_list
             robot_index (int): The cell the robot occupies as an index within the maze_list
@@ -119,7 +119,7 @@ class Maze:
             cell_F (Cell): The free cell that is adjacent to W, denoting the direction to skip over (opposite direction from W)
 
         Returns:
-            Cell | None: A wall cell in the direction opposite to F from W, 
+            Cell | None: A wall cell in the direction opposite to F from W,
             imagine going towards W from F but skipping over W to get the next cell.
             If the cell is out of bounds, returns None
         """
@@ -255,7 +255,7 @@ class HexMaze:
         """ This method will populate the fields for this maze. This should be used if the Maze object was already constructed without the fields populated.
 
         Args:
-            maze_list (list[Cell]): The maze represented as a list of Cell objects. 
+            maze_list (list[Cell]): The maze represented as a list of Cell objects.
             start_index (int): The start cell represented as an index within the maze_list
             goal_index (int): The goal cell represented as an index within the maze_list
             robot_index (int): The cell the robot occupies as an index within the maze_list
@@ -290,7 +290,7 @@ class HexMaze:
         else:
             print("Unsupported maze type")
 
-    def get_opposite_cell(self, cell_W: Cell, cell_F: Cell) -> Cell | None:
+    def get_opposite_cell(self, cell_W: HexCell, cell_F: HexCell) -> HexCell | None:
         """ Gets the cell in the direction opposite to F from W
 
             Example:
@@ -305,37 +305,13 @@ class HexMaze:
             cell_F (Cell): The free cell that is adjacent to W, denoting the direction to skip over (opposite direction from W)
 
         Returns:
-            Cell | None: A wall cell in the direction opposite to F from W, 
+            Cell | None: A wall cell in the direction opposite to F from W,
             imagine going towards W from F but skipping over W to get the next cell.
             If the cell is out of bounds, returns None
         """
-        num_rows = self.info.size[0]
-        num_cols = self.info.size[1]
-        free_row = cell_F.get_index() // num_cols
-        free_col = cell_F.get_index() % num_cols
-        wall_row = cell_W.get_index() // num_cols
-        wall_col = cell_W.get_index() % num_cols
-
-        if wall_row == free_row - 1:  # If the wall is above the free cell
-            cell_A_row = free_row - 1
-            cell_A_col = free_col
-        elif wall_row == free_row + 1:  # If the wall is below the free cell
-            cell_A_row = free_row + 1
-            cell_A_col = free_col
-        elif wall_col == free_col - 1:  # If the wall is left of the free cell
-            cell_A_row = free_row
-            cell_A_col = free_col - 1
-        elif wall_col == free_col + 1:  # If the wall is right of the free cell
-            cell_A_row = free_row
-            cell_A_col = free_col + 1
-        else:
-            return None  # The row, col is out of bounds
-
-        # Convert opposite cell's row and column to an index in the maze_list
-        if cell_A_row < 0 or cell_A_row >= num_rows or cell_A_col < 0 or cell_A_col >= num_cols:
-            return None  # The row, col is out of bounds
-        else:
-            return self.maze_list[(cell_A_row * self.info.size[1]) + cell_A_col]
+        new_index = ((cell_W.get_index()[0] - cell_F.get_index()[0]) + cell_W.get_index()[0],
+                     (cell_W.get_index()[1] - cell_F.get_index()[1]) + cell_W.get_index()[1])
+        return self.maze_list[new_index]
 
     def get_cell(self, index: int) -> Cell:
         """ Returns the cell at the given index
