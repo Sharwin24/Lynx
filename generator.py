@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
-from maze import Maze, MazeInfo
-from cell import Cell
+from maze import Maze, HexMaze, MazeInfo
+from cell import Cell, HexCell
 
 import random
 
@@ -34,7 +34,7 @@ class Generator:
           _ _ _     6 7 8
         To convert a (r,c) to an index: index = (c * num_columns) + r
         '''
-        if start == None:  # Randomize start position if not already picked
+        if start == None or start[0] < 0 or start[0] >= num_rows or start[1] < 0 or start[1] >= num_cols:  # Randomize start position if not already picked or start is out of bounds
             start = (random.randint(0, num_rows - 1),
                      random.randint(0, num_cols - 1))
         # Convert the (row, column) position to the index in maze_list
@@ -104,12 +104,82 @@ class Generator:
         )
         return generated_maze
 
+    def generate_hexagonal_maze(self, info: MazeInfo, start: tuple[int, int] = None) -> Maze:
+        maze_index_list = []
+        hex_maze_size = info.size  # integer
+        # Create a blank maze of walls
+        for q in range(-hex_maze_size + 1, hex_maze_size):
+            for r in range(-hex_maze_size + 1, hex_maze_size):
+                if (abs(-q - r) < hex_maze_size):
+                    maze_index_list.append((q, r))
+        # print(
+        #     f"Maze Indices {maze_index_list}, with {len(maze_index_list)} hexes")
+        maze_cell_list: list[HexCell] = []
+        # Iterate over maze_list and create HexCell objects
+        for index in maze_index_list:
+            maze_cell_list.append(
+                HexCell(index=index,
+                        neighbors=[],
+                        is_wall=True))
+        # If no start was given then pick a random one
+        if start == None:
+            start = random.choice(maze_index_list)
+        generated_maze = HexMaze(info, maze_cell_list, start)
+        '''
+        Randomly choose a cell Q and mark it as free, let's pick our start index
+        Add cell Q's neighbors to the wall list
+        While the wall list is not empty:
+          Randomly choose a wall W from wall list
+          If wall W is adjacent to exactly one free cell
+            Let F be the free cell that W is adjacent to
+            W is to a direction DIR of F
+            Let A be the cell to the direction DIR of W
+            Make W free
+            Make A Free
+            Add the walls of A to the wall list
+          Remove W from wall list
+        '''
+        generated_maze.set_cell_free(start)
+        wall_list: list[HexCell] = []
+        wall_list.extend(generated_maze.get_neighbors(
+            cell=generated_maze.get_cell(start)
+        ))
+        while wall_list:
+            random_wall = random.choice(wall_list)
+            random_wall_neighbors = generated_maze.get_neighbors(
+                cell=random_wall)
+            free_neighbors = [c for c in random_wall_neighbors if c.is_free]
+            if len(free_neighbors) == 1:
+                free_neighbor = free_neighbors[0]
+                opposite_cell = generated_maze.get_opposite_cell(
+                    cell_W=random_wall, cell_F=free_neighbor
+                )
+                random_wall.set_free()
+                new_walls = [c for c in generated_maze.get_neighbors(
+                    cell=opposite_cell) if c != None and c.is_wall]
+                wall_list.extend(new_walls)
+            wall_list.remove(random_wall)
+        free_cells = list(
+            filter(lambda c: c.is_free and not (
+                c.get_index() == start), generated_maze.maze_list)
+        )
+        goal = random.choice(free_cells).get_index()
+        for c in generated_maze.maze_list:
+            neighs = generated_maze.get_neighbors(cell=c)
+            neighs = [n.get_index() for n in neighs]
+            c.set_neighbors(neighs)
+        generated_maze.populate_maze(
+            maze_list=maze_cell_list,
+            start_index=start,
+            goal_index=goal,
+            robot_index=start
+        )
+        return generated_maze
+
 
 if __name__ == '__main__':
     maze_creator = Generator()
-    maze = maze_creator.generate_rectangular_maze(
-        MazeInfo(MazeInfo.MazeType.GridMaze, (10, 10)),
-        start=(0, 0)
-    )
+    maze = maze_creator.generate_hexagonal_maze(
+        MazeInfo(MazeInfo.MazeType.HexMaze, 4))
 
     print(f"Generated Maze:\n{maze}")

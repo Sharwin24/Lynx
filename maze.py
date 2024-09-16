@@ -1,5 +1,5 @@
 from enum import Enum
-from cell import Cell
+from cell import Cell, HexCell
 
 
 class MazeInfo:
@@ -55,7 +55,7 @@ class Maze:
         """ This method will populate the fields for this maze. This should be used if the Maze object was already constructed without the fields populated.
 
         Args:
-            maze_list (list[Cell]): The maze represented as a list of Cell objects. 
+            maze_list (list[Cell]): The maze represented as a list of Cell objects.
             start_index (int): The start cell represented as an index within the maze_list
             goal_index (int): The goal cell represented as an index within the maze_list
             robot_index (int): The cell the robot occupies as an index within the maze_list
@@ -119,7 +119,7 @@ class Maze:
             cell_F (Cell): The free cell that is adjacent to W, denoting the direction to skip over (opposite direction from W)
 
         Returns:
-            Cell | None: A wall cell in the direction opposite to F from W, 
+            Cell | None: A wall cell in the direction opposite to F from W,
             imagine going towards W from F but skipping over W to get the next cell.
             If the cell is out of bounds, returns None
         """
@@ -178,6 +178,13 @@ class Maze:
         """
         self.maze_list[index].set_wall()
 
+    def set_robot_index(self, index: int) -> None:
+        """ Sets the robot index
+
+        Args:
+            index (int): The index of the cell that the robot will occupy
+        """
+
     def __repr__(self) -> str:
         """ Returns the string representation of the maze
 
@@ -224,3 +231,145 @@ class Maze:
             output_str += "\n"
 
         return output_str
+
+
+class HexMaze:
+    """ A class representing the entire maze, containing the list of cell objects, the type of maze, and the start/goal cells
+    """
+
+    def __init__(self, info: MazeInfo, maze_list: list[HexCell] = [], start_index: tuple = None, goal_index: tuple = None, robot_index: tuple = None) -> None:
+        """ Creates a maze object with optional arguments to create an object with initialized values.
+            Default behavior will create an empty maze which will need the fields to be populated by using the Generator.
+            See generator.py for the logic behind populating these fields.
+            The two options for generating a maze are:
+            1. Generating the maze with generator and populating the Maze using the Maze.__init__() function with all the arguments
+            2. Creating an empty maze using Maze.__init()__ without any arguments, then generating a maze with the generator and populating the maze using Maze.populate_maze()
+
+        Args:
+            info (MazeInfo): The information about this maze including its type and size.
+            maze_list (list[Cell], optional): The maze represented as a list of Cell objects. Defaults to None.
+            start_index (tuple, optional): The start cell represented as an index within the maze_list. Defaults to None.
+            goal_index (tuple, optional): The goal cell represented as an index within the maze_list. Defaults to None.
+            robot_index (tuple, optional): The cell the robot occupies as an index within the maze_list. Defaults to None.
+        """
+        self.info = info
+        self.maze_list = maze_list
+        self.start_index = start_index
+        self.goal_index = goal_index
+        self.robot_index = robot_index
+
+    def populate_maze(self, maze_list: list[HexCell], start_index: tuple, goal_index: tuple, robot_index: tuple) -> None:
+        """ This method will populate the fields for this maze. This should be used if the Maze object was already constructed without the fields populated.
+
+        Args:
+            maze_list (list[Cell]): The maze represented as a list of Cell objects.
+            start_index (int): The start cell represented as an index within the maze_list
+            goal_index (int): The goal cell represented as an index within the maze_list
+            robot_index (int): The cell the robot occupies as an index within the maze_list
+        """
+        self.maze_list = maze_list
+        self.start_index = start_index
+        self.goal_index = goal_index
+        self.robot_index = robot_index
+
+    def get_neighbors(self, cell: HexCell) -> list[HexCell]:
+        """finds the neighboring cell indices to the given cell index
+
+        Args:
+            cell (Cell): index of the target cell
+
+        Returns:
+            neighbors_list([ind]): list of indices of found neighbors
+        """
+        if cell == None:
+            return []
+        neighbors_list = []
+        if self.info.type == MazeInfo.MazeType.HexMaze:
+
+            index = cell.get_index()
+            q = index[0]
+            r = index[1]
+
+            boundary = self.info.size
+
+            neighbor_index = [
+                (q+1, r), (q+1, r-1), (q, r-1),
+                (q-1, r), (q-1, q+1), (q, r+1)
+            ]
+
+            filtered_neighbor_ind = list(
+                filter(lambda t: all(x < boundary for x in t), neighbor_index))
+
+            for i in filtered_neighbor_ind:
+                try:
+                    neigh_cell = list(
+                        filter(lambda hc: hc.get_index() == i, self.maze_list))[0]
+                    neighbors_list.append(neigh_cell)
+                except:
+                    pass
+            return neighbors_list
+
+        else:
+            print("Unsupported maze type")
+
+    def get_opposite_cell(self, cell_W: HexCell, cell_F: HexCell) -> HexCell | None:
+        """ Gets the cell in the direction opposite to F from W
+
+            Example:
+            _ _ _
+            F w A
+            _ _ _
+
+            In this case, the opposite cell to F from W is A
+
+        Args:
+            cell_W (Cell): The wall cell to skip over in the opposing direction of F
+            cell_F (Cell): The free cell that is adjacent to W, denoting the direction to skip over (opposite direction from W)
+
+        Returns:
+            Cell | None: A wall cell in the direction opposite to F from W,
+            imagine going towards W from F but skipping over W to get the next cell.
+            If the cell is out of bounds, returns None
+        """
+        new_index = ((cell_W.get_index()[0] - cell_F.get_index()[0]) + cell_W.get_index()[0],
+                     (cell_W.get_index()[1] - cell_F.get_index()[1]) + cell_W.get_index()[1])
+        try:
+            opp_cell = list(filter(lambda c: c.get_index()
+                                   == new_index, self.maze_list))[0]
+            return opp_cell
+        except:
+            pass
+
+    def get_cell(self, index: tuple[int, int]) -> Cell:
+        """ Returns the cell at the given index
+
+        Args:
+            index (int): The index of the cell to be returned
+
+        Returns:
+            Cell: The cell at the given index
+        """
+        return list(filter(lambda c: c.get_index() == index, self.maze_list))[0]
+
+    def set_cell_free(self, index: tuple[int, int]) -> None:
+        """ Sets the cell at the given index to be free
+
+        Args:
+            index (int): The index of the cell to be set free
+        """
+        cell = list(filter(lambda c: c.get_index()
+                    == index, self.maze_list))[0]
+        cell.set_free()
+
+    def set_cell_wall(self, index: tuple) -> None:
+        """ Sets the cell at the given index to be a wall
+
+        Args:
+            index (int): The index of the cell to be set as a wall
+        """
+        cell = list(filter(lambda c: c.get_index()
+                    == index, self.maze_list))[0]
+        cell.set_wall()
+
+    def __repr__(self) -> str:
+        return f"HexMaze: \n{self.maze_list}\nStart {self.start_index} Goal {self.goal_index}"
