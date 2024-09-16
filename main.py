@@ -42,9 +42,34 @@ def interactive_mode():
             print(f"Maze:\n{grid_maze}")
             print(f"Wavefront Solver's Path: {wavefront_solver.path}")
             print(f"DFS Solver's Path: {dfs_solver.path}")
-
-    elif maze_type == MazeInfo.MazeType.HexMaze:
-        print("Unfortunately, HexMazes aren't supported yet")
+        elif int(maze_type) == MazeInfo.MazeType.HexMaze.value:
+            maze_size = input(
+                f"Creating Hex Maze! Please enter the size as an int representing the radius in hexagons: ")
+            if maze_size.isdigit():
+                maze_size = int(maze_size)
+                if maze_size < 0:
+                    print("Size cannot be negative!")
+                    return
+                print(f"Building maze with size {maze_size}")
+            else:
+                print("Invalid size given")
+                return
+            maze_start = input(
+                f"Please enter the start position as a tuple index (Axial coordinates)\nAlternatively, leave blank for a random start position ")
+            start = None
+            if maze_start != "":
+                start = tuple(map(int, maze_start.split(',')))
+            creator = Generator()
+            hex_maze = creator.generate_hexagonal_maze(
+                MazeInfo(MazeInfo.MazeType.HexMaze, maze_size), start)
+            wavefront_solver = Solver(
+                Solver.SolverAlgorithm.Wavefront, hex_maze)
+            dfs_solver = Solver(Solver.SolverAlgorithm.DFS, hex_maze)
+            wavefront_solver.solve()
+            dfs_solver.solve()
+            print(f"Hex Maze:\n{hex_maze}")
+            print(f"Wavefront Solver's Path: {wavefront_solver.path}")
+            print(f"DFS Solver's Path: {dfs_solver.path}")
     else:
         print("Invalid maze type selected")
 

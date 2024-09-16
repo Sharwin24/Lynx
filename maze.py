@@ -177,7 +177,7 @@ class Maze:
             index (int): The index of the cell to be set as a wall
         """
         self.maze_list[index].set_wall()
-    
+
     def set_robot_index(self, index: int) -> None:
         """ Sets the robot index
 
@@ -372,4 +372,4 @@ class HexMaze:
         cell.set_wall()
 
     def __repr__(self) -> str:
-        return f"HexMaze\n{self.maze_list}"
+        return f"HexMaze: \n{self.maze_list}\nStart {self.start_index} Goal {self.goal_index}"
