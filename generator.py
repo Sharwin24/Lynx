@@ -104,12 +104,27 @@ class Generator:
         )
         return generated_maze
 
+    def generate_hexagonal_maze(self, info: MazeInfo, start: tuple[int, int] = None) -> Maze:
+        maze_index_list = [(0, 0)]  # Start from center hexagon
+        hex_maze_size = info.size  # integer
+        # Create a blank maze of walls
+        for hex_num in range(1, hex_maze_size):
+            maze_index_list.append((-hex_num, hex_num))
+            maze_index_list.append((hex_num, -hex_num))
+            maze_index_list.append((0, hex_num))
+            maze_index_list.append((hex_num, 0))
+            maze_index_list.append((0, -hex_num))
+            maze_index_list.append((-hex_num, 0))
+
+        # print(maze_list)
+        # Iterate over maze_list and create HexCell objects
+        for indices in maze_index_list:
+            pass
+
 
 if __name__ == '__main__':
     maze_creator = Generator()
-    maze = maze_creator.generate_rectangular_maze(
-        MazeInfo(MazeInfo.MazeType.GridMaze, (10, 10)),
-        start=(0, 0)
-    )
+    maze = maze_creator.generate_hexagonal_maze(
+        MazeInfo(MazeInfo.MazeType.HexMaze, 3))
 
     print(f"Generated Maze:\n{maze}")
