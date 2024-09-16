@@ -73,6 +73,7 @@ class Solver:
         if pos.get_index() == self.maze.goal_index:
             return True
         elif pos.get_wall():
+            self.path.pop()
             return False
         else:
             for n in pos.get_neighbors():
