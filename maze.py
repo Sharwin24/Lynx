@@ -184,6 +184,7 @@ class Maze:
         Args:
             index (int): The index of the cell that the robot will occupy
         """
+        pass
 
     def __repr__(self) -> str:
         """ Returns the string representation of the maze
@@ -340,7 +341,7 @@ class HexMaze:
         except:
             pass
 
-    def get_cell(self, index: tuple[int, int]) -> Cell:
+    def get_cell(self, index: tuple[int, int]) -> HexCell:
         """ Returns the cell at the given index
 
         Args:
@@ -361,7 +362,7 @@ class HexMaze:
                     == index, self.maze_list))[0]
         cell.set_free()
 
-    def set_cell_wall(self, index: tuple) -> None:
+    def set_cell_wall(self, index: tuple[int, int]) -> None:
         """ Sets the cell at the given index to be a wall
 
         Args:

@@ -7,28 +7,27 @@ from visualizer import Ascii_Vizualizer
 
 import numpy as np
 
+
 class Solver:
     class SolverAlgorithm(Enum):
         Wavefront = 0
         DFS = 1
-        RecursiveBackTracking = 2
-        BeliefStatePlanner = 3
-    
+        BeliefStatePlanner = 2
+
     class Node:
         def __init__(self, state, index):
             self.state = state
             self.index = index
             self.chil = []
-        
+
         def get_state(self):
             return self.state
-        
+
         def get_index(self):
             return self.index
-        
+
         def set_child(self, node):
             self.chil.append(node)
-    
 
     def __init__(self, algo: SolverAlgorithm, m: Maze):
         self.algo = algo
@@ -124,10 +123,6 @@ class Solver:
                 curr.set_child(child)
 
 
-                    
-
-
-        
 def main():
 
     filepath = "sample_maze_2.txt"

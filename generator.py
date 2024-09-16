@@ -106,39 +106,23 @@ class Generator:
 
     def generate_hexagonal_maze(self, info: MazeInfo, start: tuple[int, int] = None) -> Maze:
         maze_index_list = []
-        hex_maze_size = info.size  # integer
+        hex_maze_size = info.size
         # Create a blank maze of walls
         for q in range(-hex_maze_size + 1, hex_maze_size):
             for r in range(-hex_maze_size + 1, hex_maze_size):
                 if (abs(-q - r) < hex_maze_size):
                     maze_index_list.append((q, r))
-        # print(
-        #     f"Maze Indices {maze_index_list}, with {len(maze_index_list)} hexes")
         maze_cell_list: list[HexCell] = []
-        # Iterate over maze_list and create HexCell objects
+        # Iterate over maze_index_list and create HexCell objects
         for index in maze_index_list:
             maze_cell_list.append(
                 HexCell(index=index,
                         neighbors=[],
                         is_wall=True))
         # If no start was given then pick a random one
-        if start == None:
+        if start == None or not (start in maze_index_list):
             start = random.choice(maze_index_list)
         generated_maze = HexMaze(info, maze_cell_list, start)
-        '''
-        Randomly choose a cell Q and mark it as free, let's pick our start index
-        Add cell Q's neighbors to the wall list
-        While the wall list is not empty:
-          Randomly choose a wall W from wall list
-          If wall W is adjacent to exactly one free cell
-            Let F be the free cell that W is adjacent to
-            W is to a direction DIR of F
-            Let A be the cell to the direction DIR of W
-            Make W free
-            Make A Free
-            Add the walls of A to the wall list
-          Remove W from wall list
-        '''
         generated_maze.set_cell_free(start)
         wall_list: list[HexCell] = []
         wall_list.extend(generated_maze.get_neighbors(
