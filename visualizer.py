@@ -80,8 +80,6 @@ class Visualizer:
         screen.blit(goal_text, goal_text_rect)
         pygame.display.flip()
 
-        print(not (self.path[path_index + 1] == goal or self.path[path_index] == start))
-
         while running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
