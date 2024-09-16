@@ -313,7 +313,7 @@ class HexMaze:
                      (cell_W.get_index()[1] - cell_F.get_index()[1]) + cell_W.get_index()[1])
         return self.maze_list[new_index]
 
-    def get_cell(self, index: int) -> Cell:
+    def get_cell(self, index: tuple[int, int]) -> Cell:
         """ Returns the cell at the given index
 
         Args:
@@ -322,7 +322,7 @@ class HexMaze:
         Returns:
             Cell: The cell at the given index
         """
-        return self.maze_list[index]
+        return list(filter(lambda c: c.get_index() == index, self.maze_list))[0]
 
     def set_cell_free(self, index: tuple[int, int]) -> None:
         """ Sets the cell at the given index to be free
@@ -330,7 +330,9 @@ class HexMaze:
         Args:
             index (int): The index of the cell to be set free
         """
-        self.maze_list[self.maze_list.index(index)].set_free()
+        cell = list(filter(lambda c: c.get_index()
+                    == index, self.maze_list))[0]
+        cell.set_free()
 
     def set_cell_wall(self, index: int) -> None:
         """ Sets the cell at the given index to be a wall
