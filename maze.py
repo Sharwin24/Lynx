@@ -21,6 +21,8 @@ class MazeInfo:
         Args:
             type (MazeType): The type of maze from a physical perspective
             size (any): The size of the maze, with the value format constrained by the MazeType
+                1. GridMaze: (row, col) for the rectangular maze
+                2. HexMaze: length of the side of a regular hexagonal maze
         """
         self.type = type
         self.size = size
@@ -293,6 +295,7 @@ class HexMaze:
 
             boundary = self.info.size
 
+            ############################### Begin_Citation [1] ############################
             neighbor_index = [
                 (q+1, r), (q+1, r-1), (q, r-1),
                 (q-1, r), (q-1, q+1), (q, r+1)
@@ -300,7 +303,7 @@ class HexMaze:
 
             filtered_neighbor_ind = list(
                 filter(lambda t: all(x < boundary for x in t), neighbor_index))
-
+            ############################### End_Citation [1]  #############################
             for i in filtered_neighbor_ind:
                 try:
                     neigh_cell = list(
@@ -373,4 +376,31 @@ class HexMaze:
         cell.set_wall()
 
     def __repr__(self) -> str:
-        return f"HexMaze: \n{self.maze_list}\nStart {self.start_index} Goal {self.goal_index}"
+        
+        output_string = ""
+
+        initial_row = 1 - self.info.size
+
+        wall_ct = 0
+        free_ct = 0
+
+        for i in self.maze_list:
+            current_cell = i
+
+            current_row = i.get_index()[0]
+            if current_row != initial_row:
+                output_string += "\n"
+                initial_row = current_row
+        
+            if current_cell.is_free:
+                output_string += "#"
+                free_ct +=1
+            elif current_cell.is_wall:
+                output_string += "@"
+                wall_ct +=1
+            
+        
+        print(f"This maze has {free_ct} free spaces and {wall_ct} wall spaces")
+        return f"HexMaze\n{output_string}"
+
+# [1]Red Blob Games. "Hexagonal Grids", Redblobgames, 2013. Available: https://redblobgames.com/grids/hexagons/#neighbors. [Accessed 16 September. 2024].

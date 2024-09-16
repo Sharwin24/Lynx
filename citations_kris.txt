@@ -1,0 +1,8 @@
+maze.py
+
+[1]Red Blob Games. "Hexagonal Grids", Redblobgames, 2013. Available: https://redblobgames.com/grids/hexagons/#neighbors. [Accessed 16 September. 2024].
+
+
+maze_interpreter.py
+[1]D. Creates, "Removing Trailing Newline in Python Strings | by Doug Creates | Medium", Medium, 2024. Available: https://medium.com/@Doug-Creates/removing-trailing-newline-in-python-strings-0bce6b94ed0c#:~:text=# To remove a trailing newline,removing characters from both ends. [Accessed 15 September. 2024].
+[2]"python - How to do an else (default) in match-case? - Stack Overflow", Stackoverflow, 2021. Available: https://stackoverflow.com/questions/68804209/how-to-do-an-else-default-in-match-case. [Accessed 12 September. 2024].
