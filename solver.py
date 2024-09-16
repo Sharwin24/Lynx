@@ -47,7 +47,9 @@ class Solver:
 
     # Wavefront algorithm
     def wavefront(self):
+        ############################### Begin_Citation [2A] ############################
         weight = [0] * len(self.maze.maze_list)
+        ############################### End_Citation [2A] ############################
         goal = self.maze.maze_list[self.maze.goal_index]
         weight[goal.get_index()] = 2
         # print(self.visited)
@@ -62,17 +64,16 @@ class Solver:
         q = deque()
         q.append(goal)
         self.visited.append(goal.get_index())
+        ############################### Begin_Citation [1A] ############################
         while q:
             front = q.popleft()
-            # print(front.get_index())
             for n in front.get_neighbors():
                 if not (n in self.visited) and not self.maze.maze_list[n].get_wall():
                     weight[n] = weight[front.get_index()] + 1
                     self.visited.append(n)
                     q.append(self.maze.maze_list[n])
             w_vis = np.array(weight).reshape(self.maze.info.size)
-            # print(f"Planner:\n {w_vis}")
-
+        ############################### End_Citation [1] ############################
         pos = self.maze.start_index
         self.path.append(pos)
         while pos != goal.get_index():
@@ -149,3 +150,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+# [1A] "Comp150-07: Intelligent Robotics Wavefront Planning Algorithm", Tufts University, https://www.cs.tufts.edu/comp/150IR/labs/wavefront.html
+# [2A] "How to create an array of zeros in Python?", GeeksForGeeks, 2022, https://www.geeksforgeeks.org/how-to-create-an-array-of-zeros-in-python/
