@@ -25,26 +25,37 @@ def interactive_mode():
             ############## Begin_Citation [3S] ##############
             size = tuple(map(int, maze_size.split(',')))
             ############## End_Citation [3S] ##############
-            print(f"Building maze with size {size}")
+            print(f"Building Grid maze with size {size}")
             maze_start = input(
                 f"Please enter the start position as a tuple of row, col\nAlternatively, leave blank for a random start position ")
             start = None
             if maze_start != "":
                 start = tuple(map(int, maze_start.split(',')))
-            print(f"Using Start {start}")
+            print(f"Using Start {start if start != None else "Random"}")
             creator = Generator()
             grid_maze = creator.generate_rectangular_maze(
                 MazeInfo(MazeInfo.MazeType.GridMaze, size), start)
-            wavefront_solver = Solver(
-                Solver.SolverAlgorithm.Wavefront, grid_maze)
-            dfs_solver = Solver(Solver.SolverAlgorithm.DFS, grid_maze)
-            wavefront_solver.solve()
-            dfs_solver.solve()
+            algo = input(
+                f"Which algorithm would you like to visualize? Enter as an integer matching the mode's value\n{
+                    [e for e in Solver.SolverAlgorithm]}:"
+            )
+            if algo.isdigit() and int(algo) in [e.value for e in Solver.SolverAlgorithm]:
+                if int(algo) == Solver.SolverAlgorithm.Wavefront.value:
+                    wavefront_solver = Solver(
+                        Solver.SolverAlgorithm.Wavefront, grid_maze)
+                    wavefront_solver.solve()
+                    print(f"Wavefront Solver's Path: {wavefront_solver.path}")
+                    viz = Visualizer(grid_maze, wavefront_solver.path)
+                    viz.display_maze()
+                elif int(algo) == Solver.SolverAlgorithm.DFS.value:
+                    dfs_solver = Solver(Solver.SolverAlgorithm.DFS, grid_maze)
+                    dfs_solver.solve()
+                    print(f"DFS Solver's Path: {dfs_solver.path}")
+                    viz = Visualizer(grid_maze, dfs_solver.path)
+                    viz.display_maze()
+            else:
+                print(f"Invalid Algorithm input given")
             print(f"Maze:\n{grid_maze}")
-            print(f"Wavefront Solver's Path: {wavefront_solver.path}")
-            print(f"DFS Solver's Path: {dfs_solver.path}")
-            viz = Visualizer(grid_maze, wavefront_solver.path)
-            viz.display_maze()
         elif int(maze_type) == MazeInfo.MazeType.HexMaze.value:
             maze_size = input(
                 f"Creating Hex Maze! Please enter the size as an int representing the radius in hexagons: ")
@@ -53,7 +64,7 @@ def interactive_mode():
                 if maze_size < 0:
                     print("Size cannot be negative!")
                     return
-                print(f"Building maze with size {maze_size}")
+                print(f"Building Hex maze with size {maze_size}")
             else:
                 print("Invalid size given")
                 return
@@ -61,6 +72,8 @@ def interactive_mode():
                 f"Please enter the start position as a tuple index (Axial coordinates)\nAlternatively, leave blank for a random start position ")
             start = None
             if maze_start != "":
+                maze_start = maze_start.replace("(", "")
+                maze_start = maze_start.replace(")", "")
                 start = tuple(map(int, maze_start.split(',')))
             creator = Generator()
             hex_maze = creator.generate_hexagonal_maze(
@@ -91,6 +104,8 @@ def filegenerated_mode():
     print(f"Maze:\n{loaded_maze}")
     print(f"Wavefront Solver's Path: {wavefront_solver.path}")
     print(f"DFS Solver's Path: {dfs_solver.path}")
+    viz = Visualizer(loaded_maze, wavefront_solver.path)
+    viz.display_maze()
 
 
 class UserType(Enum):
