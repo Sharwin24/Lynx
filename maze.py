@@ -1,5 +1,5 @@
 from enum import Enum
-from cell import Cell, Hex_Cell
+from cell import Cell, HexCell
 
 
 class MazeInfo:
@@ -226,8 +226,7 @@ class Maze:
         return output_str
 
 
-
-class Hex_Maze:
+class HexMaze:
     """ A class representing the entire maze, containing the list of cell objects, the type of maze, and the start/goal cells
     """
 
@@ -284,9 +283,7 @@ class Hex_Maze:
             index = cell.get_index()
             q = index[0]
             r = index[1]
-            s = -q -r
-
-            
+            s = -q - r
 
             return neighbors_list
 

@@ -44,7 +44,7 @@ class Cell:
         return self.index == value.index if isinstance(value, Cell) else False
 
 
-class Hex_Cell:
+class HexCell:
     """ A class representing a hexagonal cell within a maze. 
     Contains information about the cell such as it's position (index within maze_list), wall or free cell, and neighbor cells
     """
