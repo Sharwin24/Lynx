@@ -324,13 +324,13 @@ class HexMaze:
         """
         return self.maze_list[index]
 
-    def set_cell_free(self, index: int) -> None:
+    def set_cell_free(self, index: tuple[int, int]) -> None:
         """ Sets the cell at the given index to be free
 
         Args:
             index (int): The index of the cell to be set free
         """
-        self.maze_list[index].set_free()
+        self.maze_list[self.maze_list.index(index)].set_free()
 
     def set_cell_wall(self, index: int) -> None:
         """ Sets the cell at the given index to be a wall
