@@ -3,7 +3,7 @@ from maze import Maze, MazeInfo
 from collections import deque
 from maze_interpreter import MazeInterpreter
 from enum import Enum
-from visualizer import Ascii_Vizualizer
+# from visualizer import Ascii_Vizualizer
 
 import numpy as np
 
