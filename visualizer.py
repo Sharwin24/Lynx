@@ -65,14 +65,28 @@ class Visualizer:
 
         pygame.quit()
 
-# maze_filepath = "sample_maze_2.txt"
-# interpreter = MazeInterpreter()
-# maze = interpreter.interpret_external(maze_filepath)
-# print(maze.info.size)
-# bfs_solver = Solver(0, maze)
-# bfs_solver.solve()
-# print(f"DFS Path: {bfs_solver.path}")
+maze_filepath = "sample_maze_2.txt"
+interpreter = MazeInterpreter()
+maze = interpreter.interpret_external(maze_filepath)
+print(maze.info.size)
+
+
+dfs_solver = Solver(Solver.SolverAlgorithm.DFS, maze)
+dfs_solver.solve()
+print(f"DFS Path: {dfs_solver.path}")
+print(dfs_solver.path == [])
+print(maze)
+
+# wavefront_solver = Solver(Solver.SolverAlgorithm.Wavefront, maze)
+# wavefront_solver.solve()
+# print(f"Wavefront Path: {wavefront_solver.path}")
+# print(wavefront_solver.path == [])
 # print(maze)
 
-# vis = Visualizer(maze, bfs_solver.path)
-# vis.display_maze()
+
+
+vis1 = Visualizer(maze, dfs_solver.path)
+vis1.display_maze()
+
+# vis2 = Visualizer(maze, wavefront_solver.path)
+# vis2.display_maze()
