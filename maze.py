@@ -226,10 +226,6 @@ class Maze:
         return output_str
 
 
-<<<<<<< HEAD
-=======
-
->>>>>>> hex-maze
 class HexMaze:
     """ A class representing the entire maze, containing the list of cell objects, the type of maze, and the start/goal cells
     """
@@ -287,30 +283,19 @@ class HexMaze:
             index = cell.get_index()
             q = index[0]
             r = index[1]
-<<<<<<< HEAD
-            s = -q - r
-=======
-            s = -q -r
 
             boundary = self.info.size
 
-            if q < boundary:
-                neigh_cell = filter(lambda hc: hc.get_index() == (q+1, r), maze_list)
-                neighbors_list.append(neigh_cell)
-            if q > -boundary:
-                neigh_cell = filter(lambda hc: hc.get_index() == (q-1, r), maze_list)
-                neighbors_list.append(neigh_cell)
-            if r < boundary:
-                neigh_cell = filter(lambda hc: hc.get_index() == (q, r+1), maze_list)
-                neighbors_list.append()
-            if r > -boundary:
-                neigh_cell = filter(lambda hc: hc.get_index() == (q, r-1), maze_list)
-                neighbors_list.append(neigh_cell)
-            
->>>>>>> hex-maze
+            neighbor_index = [
+                (q+1, r), (q+1, r-1), (q, r-1),
+                (q-1, r), (q-1, q+1), (q, r+1)
+            ]
 
+            filtered_neighbor_ind = list(filter(lambda t: all(x < boundary for x in t), neighbor_index))
             
-
+            for i in filtered_neighbor_ind:
+                neigh_cell = filter(lambda hc: hc.get_index() == filtered_neighbor_ind[i], maze_list)
+                neighbors_list.append(neigh_cell)       
 
             return neighbors_list
 
