@@ -380,6 +380,10 @@ class HexMaze:
         output_string = ""
 
         initial_row = 1 - self.info.size
+
+        wall_ct = 0
+        free_ct = 0
+
         for i in self.maze_list:
             current_cell = i
 
@@ -390,11 +394,13 @@ class HexMaze:
         
             if current_cell.is_free:
                 output_string += "#"
+                free_ct +=1
             elif current_cell.is_wall:
                 output_string += "@"
+                wall_ct +=1
             
-            
-
+        
+        print(f"This maze has {free_ct} free spaces and {wall_ct} wall spaces")
         return f"HexMaze\n{output_string}"
 
 # [1]Red Blob Games. "Hexagonal Grids", Redblobgames, 2013. Available: https://redblobgames.com/grids/hexagons/#neighbors. [Accessed 16 September. 2024].
