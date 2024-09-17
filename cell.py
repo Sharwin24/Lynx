@@ -87,4 +87,4 @@ class HexCell:
 
     def __eq__(self, value: object) -> bool:
         # Equality is based on the cell's index within maze_list
-        return self.index == value.index if isinstance(value, Cell) else False
+        return self.index == value.index if isinstance(value, HexCell) else False
