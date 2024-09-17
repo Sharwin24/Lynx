@@ -378,20 +378,23 @@ class HexMaze:
     def __repr__(self) -> str:
         
         output_string = ""
+
+        initial_row = 1 - self.info.size
         for i in self.maze_list:
             current_cell = i
 
             current_row = i.get_index()[0]
-
-            
-
-            if current_cell.is_free():
+            if current_row != initial_row:
+                output_string += "\n"
+                initial_row = current_row
+        
+            if current_cell.is_free:
                 output_string += "#"
             elif current_cell.is_wall:
                 output_string += "@"
             
             
 
-        return f"HexMaze\n{self.maze_list}"
+        return f"HexMaze\n{output_string}"
 
 # [1]Red Blob Games. "Hexagonal Grids", Redblobgames, 2013. Available: https://redblobgames.com/grids/hexagons/#neighbors. [Accessed 16 September. 2024].
