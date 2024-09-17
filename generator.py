@@ -164,6 +164,7 @@ class Generator:
 if __name__ == '__main__':
     maze_creator = Generator()
     maze = maze_creator.generate_hexagonal_maze(
-        MazeInfo(MazeInfo.MazeType.HexMaze, 4))
+        MazeInfo(MazeInfo.MazeType.HexMaze, 5))
 
     print(f"Generated Maze:\n{maze}")
+    print(f"This maze has side length of {maze.info.size}, and has a total of {len(maze.maze_list)} hex elements")
