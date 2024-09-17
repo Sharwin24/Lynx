@@ -1,5 +1,5 @@
 from enum import Enum
-from cell import Cell, Hex_Cell
+from cell import Cell, HexCell
 
 
 class MazeInfo:
@@ -227,11 +227,11 @@ class Maze:
 
 
 
-class Hex_Maze:
+class HexMaze:
     """ A class representing the entire maze, containing the list of cell objects, the type of maze, and the start/goal cells
     """
 
-    def __init__(self, info: MazeInfo, maze_list: list[Cell] = [], start_index: tuple = None, goal_index: tuple = None, robot_index: tuple = None) -> None:
+    def __init__(self, info: MazeInfo, maze_list: list[HexCell] = [], start_index: tuple = None, goal_index: tuple = None, robot_index: tuple = None) -> None:
         """ Creates a maze object with optional arguments to create an object with initialized values.
             Default behavior will create an empty maze which will need the fields to be populated by using the Generator.
             See generator.py for the logic behind populating these fields.
@@ -252,7 +252,7 @@ class Hex_Maze:
         self.goal_index = goal_index
         self.robot_index = robot_index
 
-    def populate_maze(self, maze_list: list[Cell], start_index: tuple, goal_index: tuple, robot_index: tuple) -> None:
+    def populate_maze(self, maze_list: list[HexCell], start_index: tuple, goal_index: tuple, robot_index: tuple) -> None:
         """ This method will populate the fields for this maze. This should be used if the Maze object was already constructed without the fields populated.
 
         Args:
@@ -266,7 +266,7 @@ class Hex_Maze:
         self.goal_index = goal_index
         self.robot_index = robot_index
 
-    def get_neighbors(self, cell: Cell) -> list[Cell]:
+    def get_neighbors(self, cell: HexCell) -> list[HexCell]:
         """finds the neighboring cell indices to the given cell index
 
         Args:
@@ -286,7 +286,24 @@ class Hex_Maze:
             r = index[1]
             s = -q -r
 
+            boundary = self.info.size
+
+            if q < boundary:
+                neigh_cell = filter(lambda hc: hc.get_index() == (q+1, r), maze_list)
+                neighbors_list.append(neigh_cell)
+            if q > -boundary:
+                neigh_cell = filter(lambda hc: hc.get_index() == (q-1, r), maze_list)
+                neighbors_list.append(neigh_cell)
+            if r < boundary:
+                neigh_cell = filter(lambda hc: hc.get_index() == (q, r+1), maze_list)
+                neighbors_list.append()
+            if r > -boundary:
+                neigh_cell = filter(lambda hc: hc.get_index() == (q, r-1), maze_list)
+                neighbors_list.append(neigh_cell)
             
+
+            
+
 
             return neighbors_list
 
@@ -340,7 +357,7 @@ class Hex_Maze:
         else:
             return self.maze_list[(cell_A_row * self.info.size[1]) + cell_A_col]
 
-    def get_cell(self, index: int) -> Cell:
+    def get_cell(self, index: tuple) -> Cell:
         """ Returns the cell at the given index
 
         Args:
@@ -351,7 +368,7 @@ class Hex_Maze:
         """
         return self.maze_list[index]
 
-    def set_cell_free(self, index: int) -> None:
+    def set_cell_free(self, index: tuple) -> None:
         """ Sets the cell at the given index to be free
 
         Args:
@@ -359,7 +376,7 @@ class Hex_Maze:
         """
         self.maze_list[index].set_free()
 
-    def set_cell_wall(self, index: int) -> None:
+    def set_cell_wall(self, index: tuple) -> None:
         """ Sets the cell at the given index to be a wall
 
         Args:
