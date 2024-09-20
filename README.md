@@ -1,4 +1,4 @@
-# Robotic Lynx
+# Lynx
 Northwestern MSR Team
 
 <ul>
